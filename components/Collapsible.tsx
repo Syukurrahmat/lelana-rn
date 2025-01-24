@@ -1,45 +1,41 @@
-import { PropsWithChildren, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useState, ReactNode } from 'react';
+import { LayoutChangeEvent } from 'react-native';
+import Animated, {
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+} from 'react-native-reanimated';
+import { View } from 'tamagui';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const theme = useColorScheme() ?? 'light';
-
-  return (
-    <ThemedView>
-      <TouchableOpacity
-        style={styles.heading}
-        onPress={() => setIsOpen((value) => !value)}
-        activeOpacity={0.8}>
-        <IconSymbol
-          name="chevron.right"
-          size={18}
-          weight="medium"
-          color={theme === 'light' ? Colors.light.icon : Colors.dark.icon}
-          style={{ transform: [{ rotate: isOpen ? '90deg' : '0deg' }] }}
-        />
-
-        <ThemedText type="defaultSemiBold">{title}</ThemedText>
-      </TouchableOpacity>
-      {isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
-    </ThemedView>
-  );
+interface Collapsable {
+	children: ReactNode;
+	expanded: boolean;
 }
 
-const styles = StyleSheet.create({
-  heading: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  content: {
-    marginTop: 6,
-    marginLeft: 24,
-  },
-});
+export default function Collapsable({ children, expanded }: Collapsable) {
+	const [height, setHeight] = useState(0);
+	const animatedHeight = useSharedValue(0);
+
+	const onLayout = (event: LayoutChangeEvent) => {
+		const onLayoutHeight = event.nativeEvent.layout.height;
+
+		if (onLayoutHeight > 0 && height !== onLayoutHeight) {
+			setHeight(onLayoutHeight);
+		}
+	};
+
+	const collapsableStyle = useAnimatedStyle(() => {
+		animatedHeight.value = expanded ? withTiming(height) : withTiming(0);
+		return {
+			height: animatedHeight.value,
+		};
+	}, [expanded, height]);
+
+	return (
+		<Animated.View style={[collapsableStyle, { overflow: 'hidden' }]}>
+			<View style={{ position: 'absolute' }} onLayout={onLayout}>
+				{children}
+			</View>
+		</Animated.View>
+	);
+}

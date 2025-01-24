@@ -1,39 +1,70 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import {
+	DarkTheme,
+	DefaultTheme,
+	ThemeProvider,
+} from '@react-navigation/native';
+import { getLoadedFonts, useFonts } from 'expo-font';
+import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { useColorScheme } from 'react-native';
+import { getFontSizeVariable, getToken, TamaguiProvider, Theme } from 'tamagui';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { X } from '@tamagui/lucide-icons';
+import config from '../tamagui.config';
+import { getTokens } from 'tamagui';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+export default function Layout() {
+	const colorScheme = useColorScheme();
+	const router = useRouter();
+	const [loaded] = useFonts({
+		'Inter-Black': require('@tamagui/font-inter/otf/Inter-Black.otf'),
+		'Inter-Bold': require('@tamagui/font-inter/otf/Inter-Bold.otf'),
+		'Inter-ExtraBold': require('@tamagui/font-inter/otf/Inter-ExtraBold.otf'),
+		'Inter-ExtraLight': require('@tamagui/font-inter/otf/Inter-ExtraLight.otf'),
+		'Inter-Light': require('@tamagui/font-inter/otf/Inter-Light.otf'),
+		Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+		'Inter-SemiBold': require('@tamagui/font-inter/otf/Inter-SemiBold.otf'),
+		'Inter-Thin': require('@tamagui/font-inter/otf/Inter-Thin.otf'),
+	});
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+	const token = getFontSizeVariable('$1');
+	useEffect(() => {
+		if (loaded) {
+			SplashScreen.hideAsync();
+			console.log(getLoadedFonts());
+			console.log(token);
+		}
+	}, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
+	if (!loaded) return null;
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+	return (
+		<TamaguiProvider config={config}>
+			<Theme name={colorScheme}>
+				<ThemeProvider
+					value={colorScheme === 'light' ? DefaultTheme : DarkTheme}
+				>
+					<Stack>
+						<Stack.Screen
+							name="(tabs)"
+							options={{ headerShown: false }}
+						/>
+						<Stack.Screen
+							name="create"
+							options={{
+								title: 'Buat Entri',
+								presentation: 'modal',
+								headerBackVisible: false,
+								headerRight: () => <X onPress={() => router.back()} />,
+							}}
+						/>
+						<Stack.Screen name="+not-found" />
+					</Stack>
+				</ThemeProvider>
+			</Theme>
+		</TamaguiProvider>
+	);
 }
