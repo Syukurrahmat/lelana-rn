@@ -18,11 +18,7 @@ export const VStack = styled(YStack, {
 	name: 'VStack',
 	gap : '$true'
 })
-
-export const MyTouchableOpacity = styled(TouchableOpacity, {
-	name: 'MyTouchableOpacity',
-	activeOpacity : 0.7
-})
+ 
 
 export const TextStyled = styled(SizableText, {
 	name: 'TextStyled',

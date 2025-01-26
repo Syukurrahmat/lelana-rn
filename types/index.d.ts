@@ -1,7 +1,7 @@
 type JournalItem = {
     id: number
     date: string
-    entries: Entry[]
+    entries: EntryItem[]
     habits: JournalItemHabit[]
     summary: string | null
 }
@@ -114,4 +114,14 @@ interface CustomInputProps {
     defaultValue?: string;
     onChange?: (value: string) => void;
     error?: string;
+}
+
+interface ChildrenProps {
+	children: ReactNode;
+}
+
+
+type ControledValueProps<T> = {
+    value: T
+    onChange?: (value: T) => void
 }

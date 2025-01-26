@@ -1,6 +1,7 @@
-import { useState, ReactNode } from 'react';
+import { memo, ReactNode, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import Animated, {
+	Easing,
 	useAnimatedStyle,
 	useSharedValue,
 	withTiming,
@@ -8,32 +9,28 @@ import Animated, {
 import { View } from 'tamagui';
 
 interface Collapsable {
-	children: ReactNode;
-	expanded: boolean;
+	children?: ReactNode;
+	isOpen: boolean;
 }
 
-export default function Collapsable({ children, expanded }: Collapsable) {
+export default function Collapsable({ children, isOpen }: Collapsable) {
 	const [height, setHeight] = useState(0);
-	const animatedHeight = useSharedValue(0);
 
 	const onLayout = (event: LayoutChangeEvent) => {
 		const onLayoutHeight = event.nativeEvent.layout.height;
 
 		if (onLayoutHeight > 0 && height !== onLayoutHeight) {
-			setHeight(onLayoutHeight);
+			setHeight(onLayoutHeight + 1);
 		}
 	};
 
-	const collapsableStyle = useAnimatedStyle(() => {
-		animatedHeight.value = expanded ? withTiming(height) : withTiming(0);
-		return {
-			height: animatedHeight.value,
-		};
-	}, [expanded, height]);
+	const collapsableStyle = useAnimatedStyle(() => ({
+		height: withTiming(isOpen ? height : 0, { duration: 200 }),
+	}));
 
 	return (
 		<Animated.View style={[collapsableStyle, { overflow: 'hidden' }]}>
-			<View style={{ position: 'absolute' }} onLayout={onLayout}>
+			<View pos="absolute" w="100%" onLayout={onLayout}>
 				{children}
 			</View>
 		</Animated.View>

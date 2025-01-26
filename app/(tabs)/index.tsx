@@ -3,10 +3,11 @@ import {
 	TextStyled,
 	VStack,
 } from '@/components/custom/syledComponents';
-import DailyJournal from '@/components/journal/DailyJournal';
+import { DailyJournalTitle } from '@/components/journal/DailyJournal';
+import { Entry } from '@/components/journal/Entry';
 import { Plus } from '@tamagui/lucide-icons';
 import { useRouter } from 'expo-router';
-import { FlatList } from 'react-native';
+import { SectionList } from 'react-native';
 import { Button, Card, H2, H5, Paragraph, ScrollView } from 'tamagui';
 
 const getDummyImage = (w: number, h: number) => ({
@@ -232,10 +233,7 @@ export default function Home() {
 				pos="absolute"
 				bottom="$3"
 				right="$3"
-				style={{
-					zIndex: 200,
-					transitionDuration: '300ms',
-				}}
+				zIndex={2000}
 				theme="blue"
 				borderWidth={1.5}
 				borderColor="$blue6"
@@ -261,11 +259,21 @@ export default function Home() {
 						</Paragraph>
 					</Card>
 				</VStack>
-				<FlatList
-					data={data}
-					style={{ marginTop: 40 }}
-					renderItem={({ item }) => <DailyJournal journal={item} />}
-					keyExtractor={(item) => item.id.toString()}
+				<SectionList
+					sections={data.map(({ entries, ...e }) => ({
+						...e,
+						data: entries,
+					}))}
+					keyExtractor={(item, index) => item.id.toString()}
+					renderSectionHeader={({ section: { date, summary } }) => (
+						<DailyJournalTitle date={date} summary={summary} />
+					)}
+					renderItem={({ item, index, section }) => (
+						<Entry
+							entry={item}
+							isLast={index == section.data.length - 1}
+						/>
+					)}
 				/>
 			</ScrollView>
 		</Container>

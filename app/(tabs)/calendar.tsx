@@ -48,8 +48,8 @@ export default function Home() {
 								target="_blank"
 							>
 								<ListItem
-									hoverTheme
 									title="Nate"
+									hoverTheme
 									pressTheme
 									icon={Twitter}
 								/>

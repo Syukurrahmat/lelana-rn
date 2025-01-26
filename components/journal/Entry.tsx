@@ -31,7 +31,7 @@ export function Entry({ entry, isLast }: Entry) {
 	);
 
 	return (
-		<Stack pos="relative">
+		<Stack pos="relative" mt="$4">
 			{VertivalLine}
 			<XStack px="$4" gap="$2">
 				<Circle
@@ -72,7 +72,6 @@ export function Entry({ entry, isLast }: Entry) {
 			</XStack>
 			{!!images.length && (
 				<DisplayImages
-					leftOffset={token.space.$2.val + 18}
 					images={images.map((e) => ({ ...e, uri: e.imageUrl }))}
 				/>
 			)}

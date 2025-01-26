@@ -21,7 +21,7 @@ const animations = createAnimations({
 	quick: {
 		type: "spring",
 		damping: 20,
-		mass: 1.2,
+		mass: 1.05,
 		stiffness: 250
 	}
 });

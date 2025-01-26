@@ -1,23 +1,39 @@
+import { X } from '@tamagui/lucide-icons';
 import { ReactNode } from 'react';
-import { SizableText, View } from 'tamagui';
+import { TouchableOpacity } from 'react-native';
+import { SizableText } from 'tamagui';
+import { HStack } from './custom/syledComponents';
+import { MyTouchableOpacity } from './custom/CustomComponents';
 
-export default function Badge({ children }: { children: ReactNode }) {
+interface BadgeProps {
+	children: ReactNode;
+	withCloseButton?: Boolean;
+	onClose?: () => void;
+}
+
+export default function Badge(props: BadgeProps) {
+	const { children, withCloseButton, onClose } = props;
+
 	return (
-		<View
+		<HStack
 			bg="$blue3"
 			borderRadius="$2"
+			gap="$2"
 			px="$2"
 			borderWidth={1}
 			borderColor="$blue8"
 		>
 			<SizableText
-				textTransform="uppercase"
 				color="$blue10Dark"
-				fontSize="$1"
+				fontSize="$3"
 				fontWeight="bold"
-				lineHeight="$1"
 				children={children}
 			/>
-		</View>
+			{withCloseButton && (
+				<MyTouchableOpacity onPress={onClose}>
+					<X size={16} color="$color10" />
+				</MyTouchableOpacity>
+			)}
+		</HStack>
 	);
 }
