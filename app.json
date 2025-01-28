@@ -1,77 +1,80 @@
 {
-  "expo": {
-    "name": "lelana-rn",
-    "slug": "lelana-rn",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": [
-        "android.permission.RECORD_AUDIO",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION"
-      ],
-      "package": "com.syukurtullah.lelanarn"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/icon.png"
-    },
-    "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends.",
-          "cameraPermission": "The app accesses your camera to let you share them with your friends",
-          "microphonePermission": "The app accesses your microphone to let you share them with your friends"
-        }
-      ],
-      [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
-        }
-      ],
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "node_modules/@expo-google-fonts/inter/Inter_900Black.ttf"
-          ]
-        }
-      ],
-      [
-        "@rnmapbox/maps",
-        {
-          "RNMapboxMapsDownloadToken": "pk.eyJ1Ijoic3l1a3VyeGl4aXhpeCIsImEiOiJjbTZmemVyejkwYTA1MmpyOGJvd3d5ZGpiIn0.o_Rny5V206m1_iitufn_Dw"
-        }
-      ]
-    ],
-    "experiments": {
-      "typedRoutes": true
+    "expo": {
+        "name": "lelana-rn",
+        "slug": "lelana-rn",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/images/icon.png",
+        "scheme": "myapp",
+        "userInterfaceStyle": "automatic",
+        "newArchEnabled": true,
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "adaptiveIcon": {
+                "backgroundColor": "#ffffff"
+            },
+            "permissions": [
+                "android.permission.RECORD_AUDIO",
+                "android.permission.ACCESS_COARSE_LOCATION",
+                "android.permission.ACCESS_FINE_LOCATION"
+            ],
+            "package": "com.syukurtullah.lelanarn"
+        },
+        "web": {
+            "bundler": "metro",
+            "output": "static",
+            "favicon": "./assets/images/icon.png"
+        },
+        "plugins": [
+            "expo-router",
+            [
+                "expo-splash-screen",
+                {
+                    "image": "./assets/images/splash.png",
+                    "imageWidth": 200,
+                    "resizeMode": "contain",
+                    "backgroundColor": "#ffffff"
+                }
+            ],
+            [
+                "expo-image-picker",
+                {
+                    "photosPermission": "The app accesses your photos to let you share them with your friends.",
+                    "cameraPermission": "The app accesses your camera to let you share them with your friends",
+                    "microphonePermission": "The app accesses your microphone to let you share them with your friends"
+                }
+            ],
+            [
+                "expo-location",
+                {
+                    "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+                }
+            ],
+            [
+                "expo-font",
+                {
+                    "fonts": [
+                        "node_modules/@expo-google-fonts/inter/Inter_900Black.ttf"
+                    ]
+                }
+            ],
+            [
+                "@rnmapbox/maps",
+                {
+                    "RNMapboxMapsDownloadToken": "pk.eyJ1Ijoic3l1a3VyeGl4aXhpeCIsImEiOiJjbTZmemVyejkwYTA1MmpyOGJvd3d5ZGpiIn0.o_Rny5V206m1_iitufn_Dw"
+                }
+            ]
+        ],
+        "experiments": {
+            "typedRoutes": true
+        },
+        "extra": {
+            "eas": {
+                "projectId": "72b969ca-ca23-4162-a2e1-453fb89eebd2"
+            }
+        },
+        "owner": "syukurtullah"
     }
-  }
 }
