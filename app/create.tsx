@@ -1,33 +1,47 @@
-import { LocationSheet } from '@/components/create/LocationPicker';
-import { IconButton } from '@/components/custom/CustomComponents';
-import { Container, HStack } from '@/components/custom/syledComponents'; //prettier-ignore
+import Badge from '@/components/Badge';
+import {
+	DatetimePicker,
+	LocationSheet,
+	PreviewMedia,
+	TagsSheet,
+} from '@/components/create';
+import {
+	IconButton,
+	MyTouchableOpacity,
+} from '@/components/custom/CustomComponents';
+import { Container, HStack, TextStyled } from '@/components/custom/syledComponents'; //prettier-ignore
 import { useCreateForm } from '@/context/CreateFormContext';
 import { useCameraPicker, useImagesLibraryPicker } from '@/hooks/usePhotoPicker'; //prettier-ignore
-import { getUniqueArray } from '@/libs/utils';
+import { useSheetDisclousure } from '@/hooks/useSheetDisclousure';
+import { getUniqueArrayOfObj } from '@/libs/utils';
 import { Camera, Hash, Image as ImageIcon, MapPin } from '@tamagui/lucide-icons'; //prettier-ignore
-import { ImagePickerAsset, ImagePickerSuccessResult } from 'expo-image-picker';
-import { useState } from 'react';
-import { Controller } from 'react-hook-form';
+import { ImagePickerSuccessResult } from 'expo-image-picker';
+import { Controller, useController } from 'react-hook-form';
 import { Button, ScrollView, Spacer, Stack, View } from 'tamagui'; //prettier-ignore
 import { AutoSizeTextArea } from '../components/AutoSizeTextArea';
-import TagInput from '../components/create/TagInput';
-import { PreviewMedia } from '../components/create/PreviewMedia';
-import { DatetimePicker } from '../components/create/DatetimePicker';
+import Mapbox from '@rnmapbox/maps';
+
+Mapbox.setAccessToken('pk.eyJ1Ijoic3l1a3VyeGl4aXhpeCIsImEiOiJjbTZmemVyejkwYTA1MmpyOGJvd3d5ZGpiIn0.o_Rny5V206m1_iitufn_Dw');
 
 export default function Create() {
-	const { register, setValue, handleSubmit, getValues, control, reset } =
-		useCreateForm();
+	const { control, ...form } = useCreateForm();
 
 	const onPhotoAdded = (result: ImagePickerSuccessResult) => {
-		const prev = getValues().media;
-		setValue(
+		const { media } = form.getValues();
+		form.setValue(
 			'media',
-			getUniqueArray([...prev, ...result.assets], 'fileName')
+			getUniqueArrayOfObj([...media, ...result.assets], 'fileName')
 		);
 	};
 
 	const pickImage = useImagesLibraryPicker({ onPhotoAdded });
 	const launchCamera = useCameraPicker({ onPhotoAdded });
+
+	const locationSheetState = useSheetDisclousure({ opened: false });
+	const locationController = useController({ control, name: 'location' });
+
+	const tagsSheetState = useSheetDisclousure({ opened: false });
+	const tagsController = useController({ control, name: 'tags' });
 
 	return (
 		<Container>
@@ -35,7 +49,25 @@ export default function Create() {
 				<View px="$4" py="$4" gap="$2.5">
 					<Stack gap="$0">
 						<DatetimePicker control={control} name="datetime" />
-						<LocationSheet control={control} name="location" />
+
+						<MyTouchableOpacity
+							style={{ marginTop: 12 }}
+							onPress={locationSheetState.open}
+						>
+							<HStack gap="$2">
+								<MapPin size={20} color="$color9" />
+								<TextStyled
+									lineHeight="$1"
+									flex={1}
+									numberOfLines={1}
+									color="$color9"
+									children={
+										locationController.field.value?.address ||
+										'Loading...'
+									}
+								/>
+							</HStack>
+						</MyTouchableOpacity>
 					</Stack>
 
 					<Controller
@@ -45,9 +77,27 @@ export default function Create() {
 							<AutoSizeTextArea {...props} />
 						)}
 					/>
+					<View h={300} w='100%'>
+						<Mapbox.MapView    />
+					</View>
 				</View>
 
 				<PreviewMedia control={control} name="media" />
+
+				{!!tagsController.field.value.length && (
+					<View px="$4">
+						<MyTouchableOpacity onPress={tagsSheetState.open}>
+							<HStack gap="$2" alignItems="flex-start">
+								<Hash color="$blue9" size={20} mt="3" />
+								<HStack gap="$2" flexWrap="wrap" flex={1}>
+									{tagsController.field.value.map((e) => (
+										<Badge key={e} children={e} />
+									))}
+								</HStack>
+							</HStack>
+						</MyTouchableOpacity>
+					</View>
+				)}
 			</ScrollView>
 
 			<HStack
@@ -60,16 +110,18 @@ export default function Create() {
 			>
 				<IconButton onPress={launchCamera} icon={Camera} size="$3" />
 				<IconButton onPress={pickImage} icon={ImageIcon} size="$3" />
-				<IconButton icon={MapPin} size="$3" />
 				<IconButton
-					onPress={() => {
- 					}}
-					icon={Hash}
+					icon={MapPin}
+					onPress={locationSheetState.open}
 					size="$3"
 				/>
+				<IconButton onPress={tagsSheetState.open} icon={Hash} size="$3" />
 				<Spacer flex={1} />
 				<Button theme="dark_blue">Buat</Button>
 			</HStack>
+
+			<LocationSheet {...locationController} {...locationSheetState} />
+			<TagsSheet {...tagsController} {...tagsSheetState} />
 		</Container>
 	);
 }

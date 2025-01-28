@@ -19,5 +19,5 @@ export function IconButton(props: IconButtonProps) {
 }
 
 export function MyTouchableOpacity(props: TouchableOpacityProps) {
-	return <TouchableOpacity activeOpacity={0.75} {...props} />;
+	return <TouchableOpacity activeOpacity={0.6} {...props} />;
 }

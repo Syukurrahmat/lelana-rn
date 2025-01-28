@@ -45,6 +45,20 @@
 				{
 					"locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
 				}
+			],
+			[
+				"expo-font",
+				{
+					"fonts": [
+						"node_modules/@expo-google-fonts/inter/Inter_900Black.ttf"
+					]
+				}
+			],
+			[
+				"@rnmapbox/maps",
+				{
+					"RNMapboxMapsDownloadToken": "pk.eyJ1Ijoic3l1a3VyeGl4aXhpeCIsImEiOiJjbTZmemVyejkwYTA1MmpyOGJvd3d5ZGpiIn0.o_Rny5V206m1_iitufn_Dw"
+				}
 			]
 		],
 		"experiments": {

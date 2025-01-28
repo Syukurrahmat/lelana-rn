@@ -103,9 +103,10 @@ type Habit = {
     color: string,
     icon: string,
     order: number,
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date | null;
+    isDone : boolean[]
 }
 
 

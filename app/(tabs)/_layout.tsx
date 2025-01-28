@@ -1,16 +1,15 @@
 import { Octicons } from '@expo/vector-icons';
-import { Tabs, useRouter } from 'expo-router';
+import { Tabs } from 'expo-router';
 
 export default function Layout() {
-
 	return (
 		<Tabs
 			screenOptions={{
 				tabBarStyle: {
-					height : 60,
-					backgroundColor : 'white',
+					height: 60,
+					backgroundColor: 'white',
 				},
-				headerShown : false,
+				headerShown: false,
 			}}
 		>
 			<Tabs.Screen

@@ -24,7 +24,7 @@ export function BottomSheet(props: BottomSheet) {
 			/>
 
 			<Sheet.Frame pt="$2" gap="$1" bg='white'>
-				<Sheet.Handle bg="$color8" h="6" />
+				<Sheet.Handle bg="$color8" h="5" />
 				<View {...contentWrapperProps}>{children}</View>
 			</Sheet.Frame>
 		</Sheet>

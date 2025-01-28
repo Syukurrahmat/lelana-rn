@@ -26344,7 +26344,7 @@
         "quick": {
           "type": "spring",
           "damping": 20,
-          "mass": 1.1,
+          "mass": 1,
           "stiffness": 250
         }
       },
@@ -53079,6 +53079,20 @@
           "val": 48,
           "variable": ""
         }
+      }
+    },
+    "shadows": {
+      "light": {
+        "shadowColor": "rgba(0,0,0,0.085)",
+        "shadowColorHover": "rgba(0,0,0,0.085)",
+        "shadowColorPress": "rgba(0,0,0,0.04)",
+        "shadowColorFocus": "rgba(0,0,0,0.04)"
+      },
+      "dark": {
+        "shadowColor": "rgba(0,0,0,0.3)",
+        "shadowColorHover": "rgba(0,0,0,0.3)",
+        "shadowColorPress": "rgba(0,0,0,0.2)",
+        "shadowColorFocus": "rgba(0,0,0,0.2)"
       }
     },
     "unset": {},

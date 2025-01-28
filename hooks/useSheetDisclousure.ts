@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { BackHandler } from 'react-native';
+import { BackHandler, Keyboard } from 'react-native';
 
-type initialValues = {
+type Options = {
 	opened: boolean;
-	posision: number;
+	posision?: number;
 };
 
-export function useSheetDisclousure(initialValues: initialValues) {
-	const [opened, _setOpened] = useState(initialValues.opened);
-	const [position, setPosition] = useState(initialValues.posision);
+export function useSheetDisclousure(options: Options) {
+	const [opened, _setOpened] = useState(options.opened);
+	const [position, setPosition] = useState(options.posision);
 
 	const backHandler = useCallback(() => {
 		close();
@@ -17,13 +17,15 @@ export function useSheetDisclousure(initialValues: initialValues) {
 
 	const open = () => {
 		BackHandler.addEventListener('hardwareBackPress', backHandler);
+		Keyboard.dismiss()
 		_setOpened(true);
 	};
 
 	const close = () => {
 		BackHandler.removeEventListener('hardwareBackPress', backHandler);
+		Keyboard.dismiss()
 		_setOpened(false);
-		setPosition(initialValues.posision)
+		setPosition(options.posision)
 	};
 
 	const setOpened = (val: boolean) => {
@@ -36,5 +38,5 @@ export function useSheetDisclousure(initialValues: initialValues) {
 		};
 	}, []);
 
-	return { position, opened, setPosition, setOpened, }
+	return { position, opened, open, close, setPosition, setOpened, }
 }

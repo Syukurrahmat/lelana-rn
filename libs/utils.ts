@@ -1,7 +1,7 @@
 import { Dimensions } from "react-native";
 import { getTokens } from "tamagui";
 
-export function getUniqueArray<T>(arr: T[], key: keyof T) {
+export function getUniqueArrayOfObj<T>(arr: T[], key: keyof T) {
 	const seen = new Set();
 	return arr.filter(item => {
 		const value = item[key];
@@ -11,6 +11,11 @@ export function getUniqueArray<T>(arr: T[], key: keyof T) {
 		seen.add(value);
 		return true;
 	});
+}
+
+
+export function combineAndGetUniqueArray<T>(...args: T[][]) {
+	return [...new Set([...args.flatMap(e => e)])]
 }
 
 
@@ -57,4 +62,8 @@ export function getImageDimention(imagesData: EntryImageData[], sideSpaces: (key
 			uri: e.uri,
 		};
 	});
+}
+
+export function shadeColor(color: string, amount: number) {
+	return '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
 }

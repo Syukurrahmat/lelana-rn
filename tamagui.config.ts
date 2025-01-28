@@ -1,11 +1,10 @@
-import { defaultConfig } from '@tamagui/config/v4'
 import { createAnimations } from "@tamagui/animations-react-native";
 import { createInterFont } from "@tamagui/font-inter";
-import { createMedia } from "@tamagui/react-native-media-driver";
 import { shorthands } from "@tamagui/shorthands";
-import { themes, tokens } from "@tamagui/themes";
+import { themes, tokens, shadows } from "@tamagui/themes";
 import { createTamagui } from "tamagui";
 
+ 
 const animations = createAnimations({
 	bouncy: {
 		type: "spring",
@@ -21,14 +20,12 @@ const animations = createAnimations({
 	quick: {
 		type: "spring",
 		damping: 20,
-		mass: 1.05,
+		mass: 1,
 		stiffness: 250
 	}
 });
 
-const headingFont = createInterFont({
-	
-})
+const headingFont = createInterFont()
 const bodyFont = createInterFont();
 
 const config = createTamagui({
@@ -43,7 +40,9 @@ const config = createTamagui({
 	},
 	themes,
 	tokens,
+	shadows,
 });
+
 
 export type AppConfig = typeof config;
 

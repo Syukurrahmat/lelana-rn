@@ -1,14 +1,11 @@
-import {
-	Container,
-	TextStyled,
-	VStack,
-} from '@/components/custom/syledComponents';
+import { Container } from '@/components/custom/syledComponents';
 import { DailyJournalTitle } from '@/components/journal/DailyJournal';
 import { Entry } from '@/components/journal/Entry';
+import HeaderHome from '@/components/journal/HeaderHome';
 import { Plus } from '@tamagui/lucide-icons';
 import { useRouter } from 'expo-router';
 import { SectionList } from 'react-native';
-import { Button, Card, H2, H5, Paragraph, ScrollView } from 'tamagui';
+import { Button } from 'tamagui';
 
 const getDummyImage = (w: number, h: number) => ({
 	width: w,
@@ -226,9 +223,25 @@ export const data: JournalItem[] = [
 
 export default function Home() {
 	const router = useRouter();
+	const sections = data.map(({ entries, ...e }) => ({
+		...e,
+		data: entries,
+	}));
 
 	return (
 		<Container position="relative">
+			<SectionList
+				ListHeaderComponent={<HeaderHome />}
+				nestedScrollEnabled
+				sections={sections}
+				keyExtractor={(item) => item.id.toString()}
+				renderSectionHeader={({ section: { date, summary } }) => (
+					<DailyJournalTitle date={date} summary={summary} />
+				)}
+				renderItem={({ item, index, section }) => (
+					<Entry entry={item} isLast={index == section.data.length - 1} />
+				)}
+			/>
 			<Button
 				pos="absolute"
 				bottom="$3"
@@ -240,42 +253,6 @@ export default function Home() {
 				onPress={() => router.push('/create')}
 				icon={<Plus size={20} />}
 			/>
-			<ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-				<VStack px="$4">
-					<VStack py="$3" gap="$2">
-						<H2>Selamat Pagi</H2>
-						<TextStyled>
-							Here&apos;s a basic starter to show navigating from one
-							screen to another.
-						</TextStyled>
-					</VStack>
-					<Card bg="$backgroundFokus" p="$3">
-						<H5>Kata Kata Hari ini</H5>
-						<Paragraph lineHeight="$1" fontWeight="400">
-							Lorem ipssum dolor sit, amet consectetur adipisicing elit.
-							Esse tempora sint veniam omnis, tempore culpa quasi hic
-							corrupti asperiores. Provident aliquam sequi quaerat, fugit
-							nihil ipsum deleniti velit aperiam deserunt?
-						</Paragraph>
-					</Card>
-				</VStack>
-				<SectionList
-					sections={data.map(({ entries, ...e }) => ({
-						...e,
-						data: entries,
-					}))}
-					keyExtractor={(item, index) => item.id.toString()}
-					renderSectionHeader={({ section: { date, summary } }) => (
-						<DailyJournalTitle date={date} summary={summary} />
-					)}
-					renderItem={({ item, index, section }) => (
-						<Entry
-							entry={item}
-							isLast={index == section.data.length - 1}
-						/>
-					)}
-				/>
-			</ScrollView>
 		</Container>
 	);
 }

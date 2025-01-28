@@ -37,7 +37,7 @@ export default function CreateFormProvider({ children }: ChildrenProps) {
 					const lat = e.coords.latitude;
 					const lng = e.coords.longitude;
 					const address = await getAddressFromCoord(lat, lng);
-					form.setValue('location', { lat, lng, address });
+					form.setValue('location', { lat, lng, address },);
 				} else {
 					form.setValue('location', null);
 				}
