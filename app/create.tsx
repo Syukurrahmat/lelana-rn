@@ -21,7 +21,7 @@ import { Button, ScrollView, Spacer, Stack, View } from 'tamagui'; //prettier-ig
 import { AutoSizeTextArea } from '../components/AutoSizeTextArea';
 import Mapbox from '@rnmapbox/maps';
 
-Mapbox.setAccessToken('pk.eyJ1Ijoic3l1a3VyeGl4aXhpeCIsImEiOiJjbTZmemVyejkwYTA1MmpyOGJvd3d5ZGpiIn0.o_Rny5V206m1_iitufn_Dw');
+Mapbox.setAccessToken('pk.eyJ1Ijoic3l1a3VyeGl4aXhpeCIsImEiOiJjbTZmemJwd3QwYnNoMmtwd2h0a291a2JmIn0.kv1Jv6YILiDWgY2lvL3aww');
 
 export default function Create() {
 	const { control, ...form } = useCreateForm();

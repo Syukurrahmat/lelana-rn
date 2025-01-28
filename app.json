@@ -53,17 +53,12 @@
                 }
             ],
             [
-                "expo-font",
-                {
-                    "fonts": [
-                        "node_modules/@expo-google-fonts/inter/Inter_900Black.ttf"
-                    ]
-                }
+                "expo-font"
             ],
             [
                 "@rnmapbox/maps",
                 {
-                    "RNMapboxMapsDownloadToken": "pk.eyJ1Ijoic3l1a3VyeGl4aXhpeCIsImEiOiJjbTZmemVyejkwYTA1MmpyOGJvd3d5ZGpiIn0.o_Rny5V206m1_iitufn_Dw"
+                    "RNMapboxMapsDownloadToken": "sk.eyJ1Ijoic3l1a3VyeGl4aXhpeCIsImEiOiJjbTZnMXJyazYwY3F5MnFzYWQyNXMwMHV6In0.4deUYY0A6TnUfuCBoMskOQ"
                 }
             ]
         ],
