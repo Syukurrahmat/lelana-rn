@@ -1,6 +1,4 @@
-import { Ellipsis } from '@tamagui/lucide-icons';
 import moment from 'moment';
-import { TouchableOpacity } from 'react-native';
 import {
 	Circle,
 	getTokens,
@@ -12,6 +10,8 @@ import {
 	XStack,
 } from 'tamagui';
 import Badge from '../Badge';
+import { IconButton } from '../Icon';
+import { HStack } from '../custom/syledComponents';
 import DisplayImages from './DisplayImages';
 
 interface Entry {
@@ -37,26 +37,17 @@ export function Entry({ entry, isLast }: Entry) {
 				<Circle
 					size={18}
 					bg="$backgroundStrong"
-					mt={10}
+					mt={8}
 					borderColor="$blue10"
 					borderWidth={3}
 				/>
-				<Stack flex={1} gap="$1">
-					<XStack justifyContent="space-between">
+				<View flex={1} gap="$1">
+					<HStack justifyContent="space-between">
 						<H4 color="$blue10" fontWeight="bold">
 							{moment(entry.datetime).format('HH:mm')}
 						</H4>
-						<TouchableOpacity
-							style={{
-								height: 24,
-								width: 24,
-								justifyContent: 'center',
-								alignItems: 'center',
-							}}
-							activeOpacity={0.7}
-							children={<Ellipsis color="$color8" size={20} />}
-						/>
-					</XStack>
+						<IconButton name="more-horizontal" />
+					</HStack>
 					{!!location && (
 						<SizableText
 							fontWeight="400"
@@ -68,7 +59,7 @@ export function Entry({ entry, isLast }: Entry) {
 						</SizableText>
 					)}
 					{!!content && <Paragraph fontSize="$5">{content}</Paragraph>}
-				</Stack>
+				</View>
 			</XStack>
 			{!!images.length && (
 				<DisplayImages

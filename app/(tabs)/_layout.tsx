@@ -1,13 +1,18 @@
-import { Octicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 
 export default function Layout() {
 	return (
 		<Tabs
+		
 			screenOptions={{
 				tabBarStyle: {
-					height: 60,
+					height: 65,
+					zIndex : 3000000,
 					backgroundColor: 'white',
+				},
+				tabBarItemStyle: {
+					padding: 3,
 				},
 				headerShown: false,
 			}}
@@ -17,7 +22,7 @@ export default function Layout() {
 				options={{
 					title: 'Home',
 					tabBarIcon: (props) => (
-						<Octicons name="home" {...props} size={22} />
+						<Feather name="home" {...props} size={22} />
 					),
 				}}
 			/>
@@ -26,7 +31,7 @@ export default function Layout() {
 				options={{
 					title: 'Calendar',
 					tabBarIcon: (props) => (
-						<Octicons name="calendar" {...props} size={22} />
+						<Feather name="calendar" {...props} size={22} />
 					),
 				}}
 			/>
@@ -35,7 +40,7 @@ export default function Layout() {
 				options={{
 					title: 'Gallery',
 					tabBarIcon: (props) => (
-						<Octicons name="image" {...props} size={22} />
+						<Feather name="image" {...props} size={22} />
 					),
 				}}
 			/>
@@ -44,7 +49,7 @@ export default function Layout() {
 				options={{
 					title: 'Habits',
 					tabBarIcon: (props) => (
-						<Octicons name="light-bulb" {...props} size={22} />
+						<Feather name="life-buoy" {...props} size={22} />
 					),
 				}}
 			/>
@@ -53,7 +58,7 @@ export default function Layout() {
 				options={{
 					title: 'Setting',
 					tabBarIcon: (props) => (
-						<Octicons name="gear" {...props} size={22} />
+						<Feather name="settings" {...props} size={22} />
 					),
 				}}
 			/>

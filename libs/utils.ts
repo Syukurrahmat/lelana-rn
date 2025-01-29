@@ -13,18 +13,17 @@ export function getUniqueArrayOfObj<T>(arr: T[], key: keyof T) {
 	});
 }
 
-
 export function combineAndGetUniqueArray<T>(...args: T[][]) {
 	return [...new Set([...args.flatMap(e => e)])]
 }
 
 
 export function getImageDimention(imagesData: EntryImageData[], sideSpaces: (keyof ReturnType<typeof getTokens>['space'] | number)[]) {
-	if (imagesData.length == 0) return [];
+	if (imagesData.length === 0) return [];
 	const tokens = getTokens()
 	const spaces = sideSpaces.map(e => typeof e == 'string' ? tokens.space[e].val : e).reduce((a, b) => a + b)
 
-	const isSingle = imagesData.length == 1;
+	const isSingle = imagesData.length === 1;
 
 	const dimension = Dimensions.get('window').width - spaces
 	const maxW = isSingle ? dimension : dimension * 0.8

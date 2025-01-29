@@ -1,4 +1,3 @@
-import { useHabitContext } from '@/components/habits/HabitPageContext';
 import {
 	Container,
 	HStack,
@@ -12,35 +11,37 @@ import { useMemo } from 'react';
 import { ScrollView, Square, View } from 'tamagui';
 
 export default function OverallHabits() {
-	const { habits, setHabits } = useHabitContext();
-
+	// const { habits, setHabits } = useHabitContext();
 	return (
-		<Container>
-			<ScrollView px="$4">
-				<VStack gap="$2.5" py="$2.5">
-					{habits.map((habit) => (
-						<WeeklyHabitItem key={habit.id} habit={habit} />
-					))}
-				</VStack>
-			</ScrollView>
-		</Container>
+		<TextStyled>
+			Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti
+			incidunt, sint illum id rerum perferendis accusantium, reprehenderit
+			officia sapiente dolorem soluta epellat architecto eveniet eum,
+			quibusdam sed? Dicta, sunt.
+			Rerum.WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWQ
+		</TextStyled>
 	);
+	// return (
+	// 	<Container>
+	// 		<ScrollView px="$4">
+	// 			<VStack gap="$2.5" py="$2.5">
+	// 				{habits.map((habit) => (
+	// 					<WeeklyHabitItem key={habit.id} habit={habit} />
+	// 				))}
+	// 			</VStack>
+	// 		</ScrollView>
+	// 	</Container>
+	// );
 }
 
 function WeeklyHabitItem({ habit }: { habit: Habit }) {
 	return (
-		<VStack
-			borderRadius="$3"
-			py="$2"
-			gap="$2"
-			borderWidth={1}
-			borderColor="$borderColor"
-		>
+		<VStack br="$3" py="$2" gap="$2" bw={1} boc="$borderColor">
 			<HStack gap="$3" px="$2">
-				<Square backgroundColor={habit.color} borderRadius="$2" size="$3">
+				<Square bg={habit.color as any} br="$2" size="$3">
 					<Ionicons name={habit.icon as any} size={22} color="white" />
 				</Square>
-				<TextStyled fontWeight={600} children={habit.name} />
+				<TextStyled fow={600} children={habit.name} />
 			</HStack>
 			<HabitHeatmap habit={habit} />
 		</VStack>
@@ -430,25 +431,29 @@ export function HabitHeatmap({ habit }: { habit: Habit }) {
 	);
 
 	return (
+		<TextStyled>
+			Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti
+			incidunt, sint illum id rerum perferendis accusantium, reprehenderit
+			officia sapiente dolorem soluta epellat architecto eveniet eum,
+			quibusdam sed? Dicta, sunt.
+			Rerum.WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWQ
+		</TextStyled>
+	);
+	return (
 		<View>
-			{/* <View>
-				{gg.map((e, i) => (
-					<TextStyled
-						key={i}
-						style={{ gridColumn: 'span ' + e.span }}
-						children={e.name}
-					/>
-				))}
-			</View> */}
 			<ScrollView horizontal contentOffset={{ x: 100000, y: 0 }}>
-				<View flexDirection="column" fw="wrap" h={20 * 7} px="$2">
+				<View fd="column" fw="wrap" h={20 * 7} px="$2">
 					{dd.map((status, index) => (
 						<Square size={20} key={index} p={1}>
 							<Square
-								borderRadius="$1"
+								br="$1"
 								w="100%"
 								h="100%"
-								bg={status ? habit.color : shadeColor(habit.color, 200)}
+								bg={
+									(status
+										? habit.color
+										: shadeColor(habit.color, 200)) as any
+								}
 							/>
 						</Square>
 					))}

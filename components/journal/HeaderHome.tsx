@@ -11,7 +11,7 @@ export default function HeaderHome() {
 					another.
 				</TextStyled>
 			</View>
-			<Card bg="$backgroundFokus" p="$3">
+			<Card bg='$backgroundFocus' p='$3'>
 				<H5>Kata Kata Hari ini</H5>
 				<Paragraph lineHeight="$1" fontWeight="400">
 					Lorem ipssum dolor sit, amet consectetur adipisicing elit. Esse

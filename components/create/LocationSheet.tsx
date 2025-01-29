@@ -1,65 +1,93 @@
 import { CreateFormValues } from '@/context/CreateFormContext';
-import { Edit3, MapPin, Trash2 } from '@tamagui/lucide-icons';
-import React, { memo } from 'react';
+import { useSheetDisclousure } from '@/hooks/useSheetDisclousure';
+import Mapbox from '@rnmapbox/maps';
+import { router } from 'expo-router';
+import React from 'react';
 import { UseControllerReturn } from 'react-hook-form';
- import { ListItem, View } from 'tamagui';
+import { Button, View } from 'tamagui';
 import { BottomSheet } from '../BottomSheet';
 import { TextStyled } from '../custom/syledComponents';
+import { ThemedIcon } from '../Icon';
 
-interface LocationSheetProps
-	extends UseControllerReturn<CreateFormValues, 'location'> {
-	opened: boolean;
-	setOpened: (v: boolean) => void;
-}
+type LocationSheetProps = UseControllerReturn<CreateFormValues, 'location'> &
+	ReturnType<typeof useSheetDisclousure>;
 
 export function LocationSheet(props: LocationSheetProps) {
-	const { opened, setOpened, field } = props;
-	const { value } = field;
+	const { opened, setOpened, close, field } = props;
+	const { value, onChange } = field;
 
-
-	
 	return (
 		<BottomSheet
 			open={opened}
 			onOpenChange={setOpened}
 			snapPointsMode="fit"
 			forceRemoveScrollEnabled={opened}
-			contentWrapperProps={{
-				borderColor: 'red',
-			}}
 		>
 			<View px="$3">
 				<TextStyled fontWeight="bold" fontSize="$5">
 					{value?.address}
 				</TextStyled>
 			</View>
-			 
-			<View px="$3" pb="$3" gap="$2.5">
-				<ListItem
-					br="$2"
-					pressTheme
-					bw={1}
-					justifyContent="flex-start"
-					icon={MapPin}
-					title="Ubah Lokasi"
-				/>
 
-				<ListItem
-					pressTheme
-					br="$2"
-					bw={1}
-					justifyContent="flex-start"
-					icon={Edit3}
-					title="Ubah Nama Lokasi"
-				/>
+			{value && (
+				<Mapbox.MapView
+					scaleBarEnabled={false}
+					logoEnabled={false}
+					scrollEnabled={false}
+					pitchEnabled={false}
+					rotateEnabled={false}
+					zoomEnabled={false}
+					attributionEnabled={false}
+					style={{ flex: 1, height: 180, marginBlock: 16 }}
+				>
+					<Mapbox.Camera
+						centerCoordinate={[value.lng, value.lat]}
+						zoomLevel={13}
+					/>
+					<Mapbox.PointAnnotation
+						id="marker-1"
+						coordinate={[value.lng, value.lat]}
+						children={<View />}
+					/>
+				</Mapbox.MapView>
+			)}
 
-				<ListItem
-					pressTheme
-					br="$2"
-					bw={1}
-					justifyContent="flex-start"
-					icon={Trash2}
-					title="Hapus Lokasi"
+			<View pb="$3">
+				<Button
+					br="$0"
+					bg="white"
+					h="$5"
+					jc="flex-start"
+					gap="$1"
+					icon={<ThemedIcon name="map-pin" size={18} />}
+					children="Ubah Lokasi"
+					onPress={() => {
+						close();
+						setTimeout(() => router.push('/mapPicker', {}), 200);
+					}}
+				/>
+				<Button
+					br="$0"
+					bg="white"
+					h="$5"
+					jc="flex-start"
+					gap="$1"
+					icon={<ThemedIcon name="edit-3" size={18} />}
+					children="Ubah Nama Lokasi"
+					onPress={() => {}}
+				/>
+				<Button
+					br="$0"
+					bg="white"
+					h="$5"
+					jc="flex-start"
+					gap="$1"
+					icon={<ThemedIcon name="trash" size={18} />}
+					children="Hapus Lokasi"
+					onPress={() => {
+						close();
+						setTimeout(() => onChange(null), 200);
+					}}
 				/>
 			</View>
 		</BottomSheet>

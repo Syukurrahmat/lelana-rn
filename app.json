@@ -65,7 +65,14 @@
         "experiments": {
             "typedRoutes": true
         },
-       
-        "owner": "syukurtullah"
+        "owner": "syukurtullah",
+        "extra": {
+            "router": {
+                "origin": false
+            },
+            "eas": {
+                "projectId": "5787d0a1-ded4-4646-abd7-f045b0e51fa7"
+            }
+        }
     }
 }

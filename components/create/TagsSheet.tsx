@@ -1,19 +1,17 @@
 import { CreateFormValues } from '@/context/CreateFormContext';
 import { useDebouncedValue } from '@/hooks/useDebounce';
 import { combineAndGetUniqueArray } from '@/libs/utils';
-import { Check, Plus } from '@tamagui/lucide-icons';
+import { Octicons } from '@expo/vector-icons';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { UseControllerReturn } from 'react-hook-form';
 import { Input, ListItem, ListItemProps, View } from 'tamagui';
 import Badge from '../Badge';
 import { BottomSheet } from '../BottomSheet';
 import { HStack, TextStyled } from '../custom/syledComponents';
+import { useSheetDisclousure } from '@/hooks/useSheetDisclousure';
 
-interface LocationSheetProps
-	extends UseControllerReturn<CreateFormValues, 'tags'> {
-	opened: boolean;
-	setOpened: (v: boolean) => void;
-}
+type TagsSheetProps = UseControllerReturn<CreateFormValues, 'tags'> &
+	ReturnType<typeof useSheetDisclousure>;
 
 const dummyTags: { id?: number; name: string }[] = [
 	{
@@ -58,7 +56,7 @@ const dummyTags: { id?: number; name: string }[] = [
 	},
 ];
 
-export function TagsSheet(props: LocationSheetProps) {
+export function TagsSheet(props: TagsSheetProps) {
 	const { opened, setOpened } = props;
 
 	return (
@@ -74,7 +72,7 @@ export function TagsSheet(props: LocationSheetProps) {
 	);
 }
 
-const InnerTagsSheet = memo((props: LocationSheetProps) => {
+const InnerTagsSheet = memo(function InnerTagsSheet(props: TagsSheetProps) {
 	const { opened, field } = props;
 	const { value, onChange } = field;
 
@@ -113,8 +111,8 @@ const InnerTagsSheet = memo((props: LocationSheetProps) => {
 		}
 
 		return {
-			theme: 'blue_active',
-			iconAfter: Check,
+			theme: 'blue',
+			iconAfter: <Octicons name="check" />,
 			onPress: () => removeTags(tag),
 		};
 	};
@@ -124,6 +122,7 @@ const InnerTagsSheet = memo((props: LocationSheetProps) => {
 		else {
 			setTimeout(() => onChange(selectedTags), 200);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [opened]);
 
 	return (
@@ -170,7 +169,7 @@ const InnerTagsSheet = memo((props: LocationSheetProps) => {
 							br="$2"
 							pressTheme
 							bw={1}
-							icon={Plus}
+							icon={<Octicons name="plus" />}
 							color="$color9"
 							onPress={addTag}
 							justifyContent="flex-start"

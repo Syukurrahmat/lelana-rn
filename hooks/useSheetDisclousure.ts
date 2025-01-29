@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react';
 import { BackHandler, Keyboard } from 'react-native';
 
@@ -28,9 +29,7 @@ export function useSheetDisclousure(options: Options) {
 		setPosition(options.posision)
 	};
 
-	const setOpened = (val: boolean) => {
-		val ? open() : close();
-	}
+	const setOpened = (val: boolean) => val ? open() : close();
 
 	useEffect(() => {
 		return () => {

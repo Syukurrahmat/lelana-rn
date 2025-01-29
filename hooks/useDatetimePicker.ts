@@ -1,11 +1,12 @@
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import moment, { Moment } from 'moment';
 
-export const useDatetimePicker = (
-	value: Moment,
-	onChange: (value: Moment) => void
-) => {
+type useDTPickerType = (value: Moment, onChange: (value: Moment) => void) => () => void
+
+
+export const useDatetimePicker: useDTPickerType = (value, onChange) => {
 	const showDatePicker = () => {
+
 		DateTimePickerAndroid.open({
 			mode: 'date',
 			is24Hour: true,
@@ -13,19 +14,19 @@ export const useDatetimePicker = (
 			onChange: (event, date) => {
 				if (!date) return;
 				const valueMoment = moment(date);
-				onChange(value.clone().set({
+				const editedValue = value.clone().set({
 					year: valueMoment.year(),
 					month: valueMoment.month(),
 					date: valueMoment.date(),
 				})
-				);
+				onChange(editedValue);
 				if (event.type === 'dismissed') return;
-				showTimePicker();
+				showTimePicker(editedValue);
 			},
 		});
 	};
 
-	const showTimePicker = () => {
+	const showTimePicker = (value : Moment) => {
 		DateTimePickerAndroid.open({
 			mode: 'time',
 			is24Hour: true,
@@ -37,8 +38,7 @@ export const useDatetimePicker = (
 					hour: valueMoment.hour(),
 					minute: valueMoment.minute(),
 					millisecond: valueMoment.millisecond(),
-				})
-				);
+				}));
 			},
 		});
 	};

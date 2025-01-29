@@ -106,7 +106,7 @@ type Habit = {
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date | null;
-    isDone : boolean[]
+    isDones : boolean[]
 }
 
 

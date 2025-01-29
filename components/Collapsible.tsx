@@ -1,9 +1,7 @@
-import { memo, ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import Animated, {
-	Easing,
 	useAnimatedStyle,
-	useSharedValue,
 	withTiming,
 } from 'react-native-reanimated';
 import { View } from 'tamagui';

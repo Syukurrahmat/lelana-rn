@@ -1,6 +1,6 @@
 import { MonthCalender } from '@/components/calendar/MonthCalender';
 import { Container } from '@/components/custom/syledComponents';
-import { Calendar as CalendarIcon } from '@tamagui/lucide-icons';
+import { Octicons } from '@expo/vector-icons';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Dimensions, FlatList, ListRenderItem } from 'react-native';
 import { Button, getTokens } from 'tamagui';
@@ -72,10 +72,10 @@ export default function Calendar() {
 				right="$4"
 				bottom="$4"
 				theme="blue"
-				elevation='$0.25'
-				size='$5'
+				elevation="$0.25"
+				size="$5"
 				aspectRatio={1}
-				icon={<CalendarIcon size={22}/>}
+				icon={<Octicons name="calendar" size={22} />}
 			/>
 		</Container>
 	);

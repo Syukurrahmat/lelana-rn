@@ -1,9 +1,10 @@
 import { Container } from '@/components/custom/syledComponents';
+import { ThemedIcon } from '@/components/Icon';
 import { DailyJournalTitle } from '@/components/journal/DailyJournal';
 import { Entry } from '@/components/journal/Entry';
 import HeaderHome from '@/components/journal/HeaderHome';
-import { Plus } from '@tamagui/lucide-icons';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { SectionList } from 'react-native';
 import { Button } from 'tamagui';
 
@@ -223,9 +224,20 @@ export const data: JournalItem[] = [
 
 export default function Home() {
 	const router = useRouter();
+
+	const [reversedJournal, setReversedJournal] = useState<string[]>([]);
+
+	const onJournalReverse = (date: string) => {
+		setReversedJournal((prev) =>
+			reversedJournal.includes(date)
+				? prev.filter((e) => e !== date)
+				: [...prev, date]
+		);
+	};
+
 	const sections = data.map(({ entries, ...e }) => ({
 		...e,
-		data: entries,
+		data: reversedJournal.includes(e.date) ? [...entries].reverse() : entries,
 	}));
 
 	return (
@@ -235,23 +247,31 @@ export default function Home() {
 				nestedScrollEnabled
 				sections={sections}
 				keyExtractor={(item) => item.id.toString()}
-				renderSectionHeader={({ section: { date, summary } }) => (
-					<DailyJournalTitle date={date} summary={summary} />
+				renderSectionHeader={({ section: { date, summary, data } }) => (
+					<DailyJournalTitle
+						date={date}
+						summary={summary}
+						entryLength={data.length}
+						isReversed={reversedJournal.includes(date)}
+						onReverse={() => onJournalReverse(date)}
+					/>
 				)}
 				renderItem={({ item, index, section }) => (
-					<Entry entry={item} isLast={index == section.data.length - 1} />
+					<Entry entry={item} isLast={index === section.data.length - 1} />
 				)}
 			/>
 			<Button
 				pos="absolute"
 				bottom="$3"
 				right="$3"
+				size="$5"
+				p="$0"
+				aspectRatio={1}
 				zIndex={2000}
 				theme="blue"
-				borderWidth={1.5}
-				borderColor="$blue6"
+				elevation="$1"
 				onPress={() => router.push('/create')}
-				icon={<Plus size={20} />}
+				icon={<ThemedIcon name="plus" size={24} />}
 			/>
 		</Container>
 	);

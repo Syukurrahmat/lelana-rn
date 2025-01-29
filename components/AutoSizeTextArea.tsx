@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Input, View } from 'tamagui';
+import { Input } from 'tamagui';
 
 export function AutoSizeTextArea(props: ControledValueProps<string>) {
 	const { value, onChange } = props;
@@ -9,12 +9,13 @@ export function AutoSizeTextArea(props: ControledValueProps<string>) {
 		<Input
 			autoFocus
 			multiline
-			fontFamily="$body"
+			ff="$body"
 			value={value}
 			onChangeText={onChange}
 			verticalAlign="top"
 			bg="$backgroundTransparent"
 			unstyled
+			lh="$3"
 			h={height < 50 ? 50 : height}
 			placeholder="Tulis Apa yang kamu lakukan sekarang"
 			onContentSizeChange={(e) =>

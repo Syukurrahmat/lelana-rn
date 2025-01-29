@@ -5,10 +5,15 @@ import TodayHabit from '@/components/habits/TodayHabits';
 import WeekHabits from '@/components/habits/WeekHabits';
 import { memo, useState } from 'react';
 
-import { useWindowDimensions } from 'react-native';
-import { Route, SceneMap, TabView } from 'react-native-tab-view';
-import { H4, View } from 'tamagui';
 import { HabitPageContext } from '@/components/habits/HabitPageContext';
+import { useWindowDimensions } from 'react-native';
+import {
+	Route,
+	SceneMap,
+	TabView
+} from 'react-native-tab-view';
+import { H4, View } from 'tamagui';
+
 
 const dummyHabits: Habit[] = [
 	{
@@ -17,7 +22,7 @@ const dummyHabits: Habit[] = [
 		name: 'Drink Water',
 		icon: 'water',
 		color: '#00bcd4',
-		isDone: [false, false, false, false, false, false, false],
+		isDones: [false, false, false, false, false, false, false],
 	},
 	{
 		id: 2,
@@ -25,7 +30,7 @@ const dummyHabits: Habit[] = [
 		name: 'Morning Exercise',
 		icon: 'heart',
 		color: '#f44336',
-		isDone: [false, false, false, false, false, false, false],
+		isDones: [false, false, false, false, false, false, false],
 	},
 	{
 		id: 3,
@@ -33,7 +38,7 @@ const dummyHabits: Habit[] = [
 		name: 'Read a Book',
 		icon: 'book',
 		color: '#3f51b5',
-		isDone: [false, false, false, false, false, false, false],
+		isDones: [false, false, false, false, false, false, false],
 	},
 	{
 		id: 4,
@@ -41,7 +46,7 @@ const dummyHabits: Habit[] = [
 		name: 'Meditation',
 		icon: 'heart',
 		color: '#4caf50',
-		isDone: [false, false, false, false, false, false, false],
+		isDones: [false, false, false, false, false, false, false],
 	},
 	{
 		id: 5,
@@ -49,7 +54,7 @@ const dummyHabits: Habit[] = [
 		name: 'Plan the Day',
 		icon: 'calendar',
 		color: '#ff9800',
-		isDone: [false, false, false, false, false, false, false],
+		isDones: [false, false, false, false, false, false, false],
 	},
 
 	{
@@ -58,7 +63,7 @@ const dummyHabits: Habit[] = [
 		name: 'Go for a Walk',
 		icon: 'walk',
 		color: '#795548',
-		isDone: [false, false, false, false, false, false, false],
+		isDones: [false, false, false, false, false, false, false],
 	},
 	{
 		id: 8,
@@ -66,7 +71,7 @@ const dummyHabits: Habit[] = [
 		name: 'Journal Writing',
 		icon: 'pencil',
 		color: '#607d8b',
-		isDone: [false, false, false, false, false, false, false],
+		isDones: [false, false, false, false, false, false, false],
 	},
 ];
 
@@ -90,16 +95,16 @@ export default function TabsDemo() {
 	const layout = useWindowDimensions();
 	const [index, setIndex] = useState(0);
 	const [habits, setHabits] = useState(dummyHabits);
-
+	
 	return (
 		<Container>
-			<View bg="$backgroundStrong" pt="$4" px="$4" pb="$2">
+			<View bg="$backgroundStrong" p="$4">
 				<H4>Habbit {index}</H4>
 				<TextStyled>Lorem ipsum dolor sit amet.</TextStyled>
 			</View>
 			<HabitPageContext.Provider value={{ habits, setHabits }}>
 				<TabView
-					lazy={({ route }) => route.name == 'overall'}
+					lazy
 					renderTabBar={CustomTabbar}
 					navigationState={{ index, routes }}
 					renderScene={renderScene}
@@ -111,3 +116,4 @@ export default function TabsDemo() {
 		</Container>
 	);
 }
+ 

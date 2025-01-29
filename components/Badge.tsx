@@ -1,13 +1,12 @@
-import { X } from '@tamagui/lucide-icons';
+import { Octicons } from '@expo/vector-icons';
 import { ReactNode } from 'react';
-import { TouchableOpacity } from 'react-native';
 import { SizableText } from 'tamagui';
-import { HStack } from './custom/syledComponents';
 import { MyTouchableOpacity } from './custom/CustomComponents';
+import { HStack } from './custom/syledComponents';
 
 interface BadgeProps {
 	children: ReactNode;
-	withCloseButton?: Boolean;
+	withCloseButton?: boolean;
 	onClose?: () => void;
 }
 
@@ -31,7 +30,7 @@ export default function Badge(props: BadgeProps) {
 			/>
 			{withCloseButton && (
 				<MyTouchableOpacity onPress={onClose}>
-					<X size={16} color="$color10" />
+					<Octicons name="x" size={16} color="$color10" />
 				</MyTouchableOpacity>
 			)}
 		</HStack>

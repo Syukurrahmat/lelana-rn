@@ -1,57 +1,67 @@
-import { useHabitContext } from '@/components/habits/HabitPageContext';
 import {
 	Container,
 	HStack,
 	TextStyled,
 	VStack,
 } from '@/components/custom/syledComponents';
+import { useHabitContext } from '@/components/habits/HabitPageContext';
 import { shadeColor } from '@/libs/utils';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
-import { ScrollView, Square, View } from 'tamagui';
+import { FlatList } from 'react-native';
+import { getTokens, Square, View } from 'tamagui';
 import { MyTouchableOpacity } from '../custom/CustomComponents';
 
 export default function WeekHabits() {
 	const { habits, setHabits } = useHabitContext();
+	const tokens = getTokens();
 
-	const onItemPress = (habitId: number, dayIndex: number) => {
-		setHabits((prevHabits) =>
-			prevHabits.map((habit) =>
-				habit.id === habitId
-					? {
-							...habit,
-							isDone: habit.isDone.map((done, i) =>
-								i === dayIndex ? !done : done
-							),
-					  }
-					: habit
-			)
-		);
+	const onItemPress = (index: number, dayIndex: number) => {
+		setHabits((prevHabits) => {
+
+			const updatedHabit = {
+				...prevHabits[index],
+				isDones: prevHabits[index].isDones.map((done, i) =>
+					i === dayIndex ? !done : done
+				),
+			};
+
+			return [
+				...prevHabits.slice(0, index),
+				updatedHabit,
+				...prevHabits.slice(index + 1),
+			];
+		});
 	};
-	
+  
 	return (
 		<Container>
-			<ScrollView px="$4">
-				<VStack gap="$2.5" py="$2.5">
-					{habits.map((habit) => (
-						<WeeklyHabitItem
-							key={habit.id}
-							habit={habit}
-							onItemPress={(dayIndex) => onItemPress(habit.id, dayIndex)}
-						/>
-					))}
-				</VStack>
-			</ScrollView>
+			<FlatList
+				contentContainerStyle={{
+					paddingBlock: tokens.space.$3.val,
+					paddingInline: tokens.space.$4.val,
+				}}
+				data={habits}
+				keyExtractor={(item) => item.id.toString()}
+				ItemSeparatorComponent={() => <View h={12} />}
+				renderItem={({ item, index }) => (
+					<WeeklyHabitItem
+						key={item.id}
+						habit={item}
+						onItemPress={(dayIndex) => onItemPress(index, dayIndex)}
+					/>
+				)}
+			/>
 		</Container>
 	);
 }
 
-interface WeeklyHabitItem {
+interface WeeklyHabitItemProps {
 	habit: Habit;
 	onItemPress: (dayIndex: number) => void;
 }
 
-function WeeklyHabitItem({ habit, onItemPress }: WeeklyHabitItem) {
+function WeeklyHabitItem({ habit, onItemPress }: WeeklyHabitItemProps) {
 	return (
 		<VStack
 			borderRadius="$3"
@@ -78,7 +88,7 @@ function WeeklyHabitItem({ habit, onItemPress }: WeeklyHabitItem) {
 								borderWidth={1}
 								borderColor={habit.color}
 								bg={
-									habit.isDone[index]
+									habit.isDones[index]
 										? shadeColor(habit.color, 100)
 										: undefined
 								}

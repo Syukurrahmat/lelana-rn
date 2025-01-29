@@ -1,4 +1,6 @@
 export * from './DatetimePicker';
-export * from './LocationSheet'
+export * from './DisplayHash';
+export * from './AddressDisplay';
+export * from './LocationSheet';
 export * from './PreviewMedia';
 export * from './TagsSheet';
