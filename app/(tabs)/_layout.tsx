@@ -4,16 +4,13 @@ import { Tabs } from 'expo-router';
 export default function Layout() {
 	return (
 		<Tabs
-		
 			screenOptions={{
 				tabBarStyle: {
 					height: 65,
-					zIndex : 3000000,
+					zIndex: 3000000,
 					backgroundColor: 'white',
 				},
-				tabBarItemStyle: {
-					padding: 3,
-				},
+				tabBarItemStyle: { padding: 3 },
 				headerShown: false,
 			}}
 		>

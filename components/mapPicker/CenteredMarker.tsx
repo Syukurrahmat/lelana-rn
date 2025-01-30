@@ -1,13 +1,13 @@
 import { useAppContext } from '@/context/AppContext';
+import { Image } from '@gluestack-ui/themed';
 import React from 'react';
-import { Image } from 'tamagui';
 
 export default function CenteredMarker({ size = 45 }) {
 	const { safeAreaDimention } = useAppContext();
 
 	return (
 		<Image
-			bw={1}
+			borderWidth={1}
 			style={{
 				position: 'absolute',
 				height: size,
@@ -15,6 +15,8 @@ export default function CenteredMarker({ size = 45 }) {
 				bottom: '50%',
 				left: safeAreaDimention.width / 2 - size / 2,
 			}}
-			src={require('@/assets/images/map-marker.png')} />
+			alt='centered marker'
+			source={{ uri: require('@/assets/images/map-marker.png') }}
+		/>
 	);
 }

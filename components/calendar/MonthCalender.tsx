@@ -1,8 +1,9 @@
-import { HStack, TextStyled } from '@/components/custom/syledComponents';
+import { TextStyled } from '@/components/custom/CustomComponents';
+import { Spinner } from '@gluestack-ui/themed';
+import { HStack, View } from '@gluestack-ui/themed';
 import moment from 'moment';
 import React, { memo, useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Spinner, View } from 'tamagui';
 
 interface MonthCalendarProps {
 	startOfmonth: Date;
@@ -31,13 +32,13 @@ export const MonthCalender = memo(function MonthCalender({
 		() => (
 			<View gap="$2" px="$4" py="$2">
 				<HStack h={36} justifyContent="center">
-					<TextStyled fontSize="$5">{monthFormatted}</TextStyled>
+					<TextStyled fontSize="$lg">{monthFormatted}</TextStyled>
 				</HStack>
 
 				<View
 					justifyContent="flex-start"
 					flexDirection="row"
-					fw="wrap"
+					flexWrap="wrap"
 					flex={1}
 				>
 					<WeekDays />
@@ -60,7 +61,7 @@ export const MonthCalender = memo(function MonthCalender({
 				calendar
 			) : (
 				<HStack gap="$2.5">
-					<TextStyled fontSize="$6" ta="center">
+					<TextStyled fontSize="$lg" textAlign="center">
 						{monthFormatted}
 					</TextStyled>
 					<Spinner size="small" />
@@ -77,10 +78,10 @@ const WeekDays = memo(function WeekDays() {
 				<View key={index} style={style.weekCellWrapper}>
 					<View flex={1} style={style.cell} w="100%">
 						<TextStyled
-							lineHeight="$1"
-							fontSize="$3"
+							lineHeight="$md"
+							fontSize="$sm"
 							color="$color9"
-							ta="center"
+							textAlign="center"
 							children={day}
 						/>
 					</View>
@@ -106,7 +107,7 @@ const Days = memo(function Days({ count }: { count: number }) {
 			{Array.from({ length: count }, (_, index) => (
 				<View key={index} style={style.dayCell} p={1}>
 					<View flex={1} style={style.cell}>
-						<TextStyled lineHeight="$1" ta="center">
+						<TextStyled lineHeight="$md" textAlign="center">
 							{index + 1}
 						</TextStyled>
 					</View>

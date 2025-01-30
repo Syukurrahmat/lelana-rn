@@ -1,10 +1,9 @@
-import Collapsable from '@/components/Collapsible';
-import { MyTouchableOpacity } from '@/components/custom/CustomComponents';
-import { HStack, TextStyled } from '@/components/custom/syledComponents'; //prettier-ignore
+import { TextStyled } from '@/components/custom/CustomComponents'; //prettier-ignore
 import { CreateFormValues } from '@/context/CreateFormContext';
+import { HStack } from '@gluestack-ui/themed';
 import { TouchableOpacityProps } from 'react-native';
-import { Square } from 'tamagui';
-import { ThemedIcon } from '../Icon';
+import Collapsable from '../Collapsible';
+import { MyTouchableOpacity, ThemedIcon } from '../custom/CustomComponents';
 
 type LocationPickerProps = TouchableOpacityProps & {
 	location: CreateFormValues['location'];
@@ -12,17 +11,15 @@ type LocationPickerProps = TouchableOpacityProps & {
 
 export function AddressDisplay({ location, ...props }: LocationPickerProps) {
 	return (
-		<Collapsable isOpen={!!location}>
+		<Collapsable isOpen={true}>
 			<MyTouchableOpacity {...props}>
-				<HStack gap="$2">
-					<Square size={20}>
-						<ThemedIcon name="map-pin" size={19} color="$color10" />
-					</Square>
+				<HStack gap="$2" alignItems="center">
+					<ThemedIcon name="map-pin" size={18} color="$trueGray500" />
 					<TextStyled
-						lineHeight="$1"
+						lineHeight="$md"
 						flex={1}
 						numberOfLines={1}
-						color="$color10"
+						color="$trueGray500"
 						children={location?.address}
 					/>
 				</HStack>

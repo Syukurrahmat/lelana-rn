@@ -1,22 +1,17 @@
 import { StyleSheet } from 'react-native';
 import { TabBar, TabBarItem } from 'react-native-tab-view';
 import { Props as TabBarProps } from 'react-native-tab-view/lib/typescript/commonjs/src/TabBar';
-import { useTheme } from 'tamagui';
 
 export default function CustomTabbar(props: TabBarProps<any>) {
-	const theme = useTheme();
-
-	const borderColor = theme.borderColorPress.val;
-	const activeColor = theme.blue10.val;
 
 	return (
 		<TabBar
 			{...props}
 			pressColor="transparent"
-			indicatorStyle={{ backgroundColor: activeColor }}
+			// indicatorStyle={{ backgroundColor: activeColor }}
 			inactiveColor="gray"
-			activeColor={activeColor}
-			style={[style.tabBar, { borderColor }]}
+			// activeColor={activeColor}
+			style={[style.tabBar, { borderColor : 'red' }]}
 			renderTabBarItem={({ key, ...tabbarProps }) => (
 				<TabBarItem
 					key={key}

@@ -1,26 +1,28 @@
-import { useState } from 'react';
-import { Input } from 'tamagui';
+import { useToken } from '@gluestack-ui/themed';
+import { useRef, useState } from 'react';
+import { TextInput } from 'react-native';
 
 export function AutoSizeTextArea(props: ControledValueProps<string>) {
 	const { value, onChange } = props;
-	const [height, setHeight] = useState(0);
+	const [height, _setHeight] = useState(0);
 
 	return (
-		<Input
-			autoFocus
+		<TextInput
 			multiline
-			ff="$body"
+			autoFocus={!value}
 			value={value}
 			onChangeText={onChange}
-			verticalAlign="top"
-			bg="$backgroundTransparent"
-			unstyled
-			lh="$3"
-			h={height < 50 ? 50 : height}
+			textAlignVertical="top"
+			style={{
+				height: height < 85 ? 85 : height,
+				flex: 1,
+				fontFamily: 'Inter',
+				fontSize: useToken('fontSizes', 'md'),
+			}}
 			placeholder="Tulis Apa yang kamu lakukan sekarang"
-			onContentSizeChange={(e) =>
-				setHeight(e.nativeEvent.contentSize.height + 10)
-			}
+			onContentSizeChange={(e) => {
+				if (value) _setHeight(e.nativeEvent.contentSize.height + 20);
+			}}
 		/>
 	);
 }

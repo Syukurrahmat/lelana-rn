@@ -1,14 +1,11 @@
 import { CreateFormValues } from '@/context/CreateFormContext';
 import { useDebouncedValue } from '@/hooks/useDebounce';
+import { useSheetDisclousure } from '@/hooks/useSheetDisclousure';
 import { combineAndGetUniqueArray } from '@/libs/utils';
 import { Octicons } from '@expo/vector-icons';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { UseControllerReturn } from 'react-hook-form';
-import { Input, ListItem, ListItemProps, View } from 'tamagui';
-import Badge from '../Badge';
-import { BottomSheet } from '../BottomSheet';
-import { HStack, TextStyled } from '../custom/syledComponents';
-import { useSheetDisclousure } from '@/hooks/useSheetDisclousure';
+import { TextInput } from 'react-native';
 
 type TagsSheetProps = UseControllerReturn<CreateFormValues, 'tags'> &
 	ReturnType<typeof useSheetDisclousure>;
@@ -59,24 +56,25 @@ const dummyTags: { id?: number; name: string }[] = [
 export function TagsSheet(props: TagsSheetProps) {
 	const { opened, setOpened } = props;
 
-	return (
-		<BottomSheet
-			open={opened}
-			onOpenChange={setOpened}
-			snapPointsMode="percent"
-			snapPoints={[98]}
-			forceRemoveScrollEnabled={opened}
-		>
-			<InnerTagsSheet {...props} />
-		</BottomSheet>
-	);
+	return null;
+	// return (
+	// 	<BottomSheet
+	// 		open={opened}
+	// 		onOpenChange={setOpened}
+	// 		snapPointsMode="percent"
+	// 		snapPoints={[98]}
+	// 		forceRemoveScrollEnabled={opened}
+	// 	>
+	// 		<InnerTagsSheet {...props} />
+	// 	</BottomSheet>
+	// );
 }
 
 const InnerTagsSheet = memo(function InnerTagsSheet(props: TagsSheetProps) {
 	const { opened, field } = props;
 	const { value, onChange } = field;
 
-	const inputRef = useRef<Input>(null);
+	const inputRef = useRef<TextInput>(null);
 
 	const [selectedTags, setSelectedTag] = useState(value);
 	const [searchValue, setSearchValue] = useState('');
@@ -101,7 +99,7 @@ const InnerTagsSheet = memo(function InnerTagsSheet(props: TagsSheetProps) {
 		setSelectedTag((prev) => prev.filter((e) => e !== tag));
 	};
 
-	const getItemProps = (tag: string): ListItemProps => {
+	const getItemProps = (tag: string) => {
 		const isSelected = selectedTags.includes(tag);
 
 		if (!isSelected) {
@@ -122,69 +120,70 @@ const InnerTagsSheet = memo(function InnerTagsSheet(props: TagsSheetProps) {
 		else {
 			setTimeout(() => onChange(selectedTags), 200);
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [opened]);
 
-	return (
-		<View px="$4" gap="$4">
-			<Input
-				ref={inputRef}
-				value={searchValue}
-				onChangeText={setSearchValue}
-				placeholder="Tambah atau cari tags"
-				submitBehavior="submit"
-			/>
-			{!!selectedTags.length && (
-				<HStack fw="wrap" rowGap="$2.5" columnGap="$2">
-					{selectedTags.map((e) => (
-						<Badge
-							key={e}
-							children={e}
-							withCloseButton
-							onClose={() => removeTags(e)}
-						/>
-					))}
-				</HStack>
-			)}
+	return null;
+	// return (
+	// 	<View px="$4" gap="$4">
+	// 		<Input
+	// 			ref={inputRef}
+	// 			value={searchValue}
+	// 			onChangeText={setSearchValue}
+	// 			placeholder="Tambah atau cari tags"
+	// 			submitBehavior="submit"
+	// 		/>
+	// 		{!!selectedTags.length && (
+	// 			<HStack fw="wrap" rowGap="$2.5" columnGap="$2">
+	// 				{selectedTags.map((e) => (
+	// 					<Badge
+	// 						key={e}
+	// 						children={e}
+	// 						withCloseButton
+	// 						onClose={() => removeTags(e)}
+	// 					/>
+	// 				))}
+	// 			</HStack>
+	// 		)}
 
-			<View pb="$3" gap="$2.5">
-				{displayTagList.map((e) => (
-					<ListItem
-						key={e}
-						br="$2"
-						pressTheme
-						bw={1}
-						justifyContent="flex-start"
-						title={e}
-						{...getItemProps(e)}
-					/>
-				))}
-				{Boolean(
-					debouncedSearch.length &&
-						!displayTagList.length &&
-						displayTagList.every((e) => e !== debouncedSearch)
-				) &&
-					(debouncedSearch.length > 3 ? (
-						<ListItem
-							br="$2"
-							pressTheme
-							bw={1}
-							icon={<Octicons name="plus" />}
-							color="$color9"
-							onPress={addTag}
-							justifyContent="flex-start"
-							title={
-								<TextStyled color="$color9">
-									Tambah {debouncedSearch}
-								</TextStyled>
-							}
-						/>
-					) : (
-						<TextStyled ta="center" color="$color9">
-							Tag Tidak ditemukan
-						</TextStyled>
-					))}
-			</View>
-		</View>
-	);
+	// 		<View pb="$3" gap="$2.5">
+	// 			{displayTagList.map((e) => (
+	// 				<ListItem
+	// 					key={e}
+	// 					br="$2"
+	// 					pressTheme
+	// 					bw={1}
+	// 					justifyContent="flex-start"
+	// 					title={e}
+	// 					{...getItemProps(e)}
+	// 				/>
+	// 			))}
+	// 			{Boolean(
+	// 				debouncedSearch.length &&
+	// 					!displayTagList.length &&
+	// 					displayTagList.every((e) => e !== debouncedSearch)
+	// 			) &&
+	// 				(debouncedSearch.length > 3 ? (
+	// 					<ListItem
+	// 						br="$2"
+	// 						pressTheme
+	// 						bw={1}
+	// 						icon={<Octicons name="plus" />}
+	// 						color="$color9"
+	// 						onPress={addTag}
+	// 						justifyContent="flex-start"
+	// 						title={
+	// 							<TextStyled color="$color9">
+	// 								Tambah {debouncedSearch}
+	// 							</TextStyled>
+	// 						}
+	// 					/>
+	// 				) : (
+	// 					<TextStyled ta="center" color="$color9">
+	// 						Tag Tidak ditemukan
+	// 					</TextStyled>
+	// 				))}
+	// 		</View>
+	// 	</View>
+	// );
 });

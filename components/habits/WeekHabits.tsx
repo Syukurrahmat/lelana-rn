@@ -1,58 +1,48 @@
-import {
-	Container,
-	HStack,
-	TextStyled,
-	VStack,
-} from '@/components/custom/syledComponents';
+import { TextStyled } from '@/components/custom/CustomComponents';
 import { useHabitContext } from '@/components/habits/HabitPageContext';
 import { shadeColor } from '@/libs/utils';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import { FlatList } from 'react-native';
-import { getTokens, Square, View } from 'tamagui';
 import { MyTouchableOpacity } from '../custom/CustomComponents';
+import { useState, useEffect } from 'react';
+import { useDebouncedCallback } from '@/hooks/useDebounce';
+import { Box, Center, HStack, View, VStack } from '@gluestack-ui/themed';
 
 export default function WeekHabits() {
 	const { habits, setHabits } = useHabitContext();
-	const tokens = getTokens();
 
-	const onItemPress = (index: number, dayIndex: number) => {
-		setHabits((prevHabits) => {
+	const onItemPress = useDebouncedCallback(
+		(habitId: number, dayIndex: number) => {
+			setHabits((draft) => {
+				const todo = draft.find((e) => e.id === habitId)!;
+				todo.isDones[dayIndex] = !todo.isDones[dayIndex];
+			});
+		},
+		0
+	);
 
-			const updatedHabit = {
-				...prevHabits[index],
-				isDones: prevHabits[index].isDones.map((done, i) =>
-					i === dayIndex ? !done : done
-				),
-			};
-
-			return [
-				...prevHabits.slice(0, index),
-				updatedHabit,
-				...prevHabits.slice(index + 1),
-			];
-		});
-	};
-  
 	return (
-		<Container>
+		<Box>
 			<FlatList
-				contentContainerStyle={{
-					paddingBlock: tokens.space.$3.val,
-					paddingInline: tokens.space.$4.val,
-				}}
+				contentContainerStyle={
+					{
+						// paddingBlock: tokens.space.$3.val,
+						// paddingInline: tokens.space.$4.val,
+					}
+				}
 				data={habits}
 				keyExtractor={(item) => item.id.toString()}
-				ItemSeparatorComponent={() => <View h={12} />}
+				ItemSeparatorComponent={() => <Box h={12} />}
 				renderItem={({ item, index }) => (
 					<WeeklyHabitItem
 						key={item.id}
 						habit={item}
-						onItemPress={(dayIndex) => onItemPress(index, dayIndex)}
+						onItemPress={(dayIndex) => onItemPress(item.id, dayIndex)}
 					/>
 				)}
 			/>
-		</Container>
+		</Box>
 	);
 }
 
@@ -71,32 +61,63 @@ function WeeklyHabitItem({ habit, onItemPress }: WeeklyHabitItemProps) {
 			borderColor="$borderColor"
 		>
 			<HStack gap="$3">
-				<Square backgroundColor={habit.color} borderRadius="$2" size="$3">
+				<Center
+					backgroundColor={habit.color}
+					borderRadius="$2"
+					w="$3"
+					h="$3"
+				>
 					<Ionicons name={habit.icon as any} size={22} color="white" />
-				</Square>
+				</Center>
 				<TextStyled fontWeight={600} children={habit.name} />
 			</HStack>
-			<HStack jc="space-between" gap="$2">
+			<HStack justifyContent="space-between" gap="$2">
 				{moment.weekdaysShort().map((day, index) => (
-					<View key={day} ai="center">
-						<TextStyled fontSize="$1" color="$color9" children={day} />
-						<MyTouchableOpacity>
-							<Square
-								size="$2.5"
-								onPress={() => onItemPress(index)}
-								borderRadius="$4"
-								borderWidth={1}
-								borderColor={habit.color}
-								bg={
-									habit.isDones[index]
-										? shadeColor(habit.color, 100)
-										: undefined
-								}
-							/>
-						</MyTouchableOpacity>
-					</View>
+					<DailyHabit
+						key={day}
+						day={day}
+						color={habit.color}
+						isActive={habit.isDones[index]}
+						onPress={() => onItemPress(index)}
+					/>
 				))}
 			</HStack>
 		</VStack>
+	);
+}
+
+interface DailyHabitProps {
+	onPress: () => void;
+	isActive: boolean;
+	day: string;
+	color: string;
+}
+
+function DailyHabit({ onPress, isActive, day, color }: DailyHabitProps) {
+	const [checked, setChecked] = useState(isActive);
+
+	const _onPress = () => {
+		setChecked((e) => !e);
+		onPress();
+	};
+
+	useEffect(() => {
+		setChecked(isActive);
+	}, [isActive]);
+
+	return (
+		<View alignItems="center">
+			<TextStyled fontSize="$xs" color="$color9" children={day} />
+			<MyTouchableOpacity onPress={_onPress}>
+				<Center
+					w="$2.5"
+					h="$2.5"
+					borderRadius="$4"
+					borderWidth={1}
+					borderColor={color}
+					bg={checked ? shadeColor(color, 100) : undefined}
+				/>
+			</MyTouchableOpacity>
+		</View>
 	);
 }

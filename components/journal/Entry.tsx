@@ -1,85 +1,102 @@
-import moment from 'moment';
 import {
-	Circle,
-	getTokens,
-	H4,
-	Paragraph,
-	SizableText,
-	Stack,
+	Box,
+	Center,
+	HStack,
+	useToken as getToken,
 	View,
-	XStack,
-} from 'tamagui';
-import Badge from '../Badge';
-import { IconButton } from '../Icon';
-import { HStack } from '../custom/syledComponents';
+} from '@gluestack-ui/themed';
+import moment from 'moment';
+import Tags from '../Badge';
+import {
+	HeadingStyled,
+	MyButtonIcon,
+	TextStyled,
+} from '../custom/CustomComponents';
 import DisplayImages from './DisplayImages';
 
-interface Entry {
+interface EntryProps {
 	entry: EntryItem;
 	isLast?: boolean;
 }
 
-export function Entry({ entry, isLast }: Entry) {
-	const token = getTokens();
+const bulletOption = {
+	size: 16,
+	marginTop: 9,
+};
 
+export function Entry({ entry, isLast }: EntryProps) {
 	const { content, location, tags, images } = entry;
 
+	const displayImageOffset = getToken('space', '2') + bulletOption.size;
+
 	const VertivalLine = !isLast && (
-		<View pos="absolute" left="$4" w={18} top={10 + 18} h="100%">
-			<View w={3} bg="$blue5Light" h="100%" mx="auto" />
+		<View
+			position="absolute"
+			left="$4"
+			w={bulletOption.size}
+			top={bulletOption.size + bulletOption.marginTop}
+			h="100%"
+		>
+			<View w={3} bg="$primary50" h="100%" mx="auto" />
 		</View>
 	);
 
 	return (
-		<Stack pos="relative" mt="$4">
+		<Box position="relative" mt="$4">
 			{VertivalLine}
-			<XStack px="$4" gap="$2">
-				<Circle
-					size={18}
-					bg="$backgroundStrong"
-					mt={8}
-					borderColor="$blue10"
+			<HStack px="$4" gap="$2">
+				<Center
+					borderRadius={1000}
+					w={bulletOption.size}
+					h={bulletOption.size}
+					mt={bulletOption.marginTop}
+					borderColor="$primary500"
 					borderWidth={3}
 				/>
-				<View flex={1} gap="$1">
-					<HStack justifyContent="space-between">
-						<H4 color="$blue10" fontWeight="bold">
+				<View flex={1}>
+					<HStack alignItems="center" justifyContent="space-between">
+						<HeadingStyled size="md" color="$primary500" fontWeight="bold">
 							{moment(entry.datetime).format('HH:mm')}
-						</H4>
-						<IconButton name="more-horizontal" />
+						</HeadingStyled>
+						<MyButtonIcon
+							name="more-horizontal"
+							size="xs"
+							borderRadius="$full"
+						/>
 					</HStack>
-					{!!location && (
-						<SizableText
-							fontWeight="400"
-							fontSize="$4"
-							numberOfLines={1}
-							color="$color9"
-						>
-							{location.address}
-						</SizableText>
-					)}
-					{!!content && <Paragraph fontSize="$5">{content}</Paragraph>}
+					<View gap="$2" mt="$0.5">
+						{!!location && (
+							<TextStyled
+								fontWeight="400"
+								fontSize="$sm"
+								numberOfLines={1}
+								color="$trueGray500"
+								children={location.address}
+							/>
+						)}
+						{!!content && <TextStyled>{content}</TextStyled>}
+					</View>
 				</View>
-			</XStack>
+			</HStack>
 			{!!images.length && (
 				<DisplayImages
-					images={images.map((e) => ({ ...e, uri: e.imageUrl }))}
+					images={images.map(({ imageUrl, ...e }) => ({
+						...e,
+						uri: imageUrl,
+					}))}
+					leftOffset={displayImageOffset}
 				/>
 			)}
 			{!!tags.length && (
-				<XStack
-					mt="$2"
-					gap="$2"
-					pr="$4"
-					flexWrap="wrap"
-					pl={token.space.$2.val + token.space.$4.val + 18}
-				>
-					{tags.map((e) => (
-						<Badge key={e.id} children={e.name} />
-					))}
-				</XStack>
+				<View mt="$3.5" pl={displayImageOffset}>
+					<HStack gap="$2" px="$4" flexWrap="wrap">
+						{tags.map((e) => (
+							<Tags key={e.id} children={e.name} />
+						))}
+					</HStack>
+				</View>
 			)}
 			<View h="$1" />
-		</Stack>
+		</Box>
 	);
 }

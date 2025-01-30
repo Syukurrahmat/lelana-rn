@@ -1,5 +1,4 @@
 import { Dimensions } from "react-native";
-import { getTokens } from "tamagui";
 
 export function getUniqueArrayOfObj<T>(arr: T[], key: keyof T) {
 	const seen = new Set();
@@ -18,14 +17,11 @@ export function combineAndGetUniqueArray<T>(...args: T[][]) {
 }
 
 
-export function getImageDimention(imagesData: EntryImageData[], sideSpaces: (keyof ReturnType<typeof getTokens>['space'] | number)[]) {
+export function getImageDimention(imagesData: EntryImageData[], leftOffset: number) {
 	if (imagesData.length === 0) return [];
-	const tokens = getTokens()
-	const spaces = sideSpaces.map(e => typeof e == 'string' ? tokens.space[e].val : e).reduce((a, b) => a + b)
-
 	const isSingle = imagesData.length === 1;
 
-	const dimension = Dimensions.get('window').width - spaces
+	const dimension = Dimensions.get('window').width - leftOffset
 	const maxW = isSingle ? dimension : dimension * 0.8
 	const minW = dimension * 0.6
 

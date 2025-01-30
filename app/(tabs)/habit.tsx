@@ -1,4 +1,4 @@
-import { Container, TextStyled } from '@/components/custom/syledComponents';
+import { TextStyled } from '@/components/custom/CustomComponents';
 import CustomTabbar from '@/components/habits/CustomTabbar';
 import OverallHabits from '@/components/habits/OverallHabits';
 import TodayHabit from '@/components/habits/TodayHabits';
@@ -12,7 +12,8 @@ import {
 	SceneMap,
 	TabView
 } from 'react-native-tab-view';
-import { H4, View } from 'tamagui';
+ import { useImmer } from "use-immer";
+import { Box, Heading, VStack } from '@gluestack-ui/themed';
 
 
 const dummyHabits: Habit[] = [
@@ -94,14 +95,14 @@ const routes: Route[] = [
 export default function TabsDemo() {
 	const layout = useWindowDimensions();
 	const [index, setIndex] = useState(0);
-	const [habits, setHabits] = useState(dummyHabits);
+	const [habits, setHabits] = useImmer(dummyHabits);
 	
 	return (
-		<Container>
-			<View bg="$backgroundStrong" p="$4">
-				<H4>Habbit {index}</H4>
+		<Box>
+			<VStack bg="$backgroundStrong" p="$4">
+				<Heading size='md'>Habbit {index}</Heading>
 				<TextStyled>Lorem ipsum dolor sit amet.</TextStyled>
-			</View>
+			</VStack>
 			<HabitPageContext.Provider value={{ habits, setHabits }}>
 				<TabView
 					lazy
@@ -113,7 +114,7 @@ export default function TabsDemo() {
 					renderLazyPlaceholder={(p) => <TextStyled>sksksk</TextStyled>}
 				/>
 			</HabitPageContext.Provider>
-		</Container>
+		</Box>
 	);
 }
  

@@ -1,12 +1,11 @@
-import { Container } from '@/components/custom/syledComponents';
-import { ThemedIcon } from '@/components/Icon';
+import { Container, ThemedIcon } from '@/components/custom/CustomComponents';
 import { DailyJournalTitle } from '@/components/journal/DailyJournal';
 import { Entry } from '@/components/journal/Entry';
 import HeaderHome from '@/components/journal/HeaderHome';
-import { useRouter } from 'expo-router';
+import { Fab, FabIcon } from '@gluestack-ui/themed';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { SectionList } from 'react-native';
-import { Button } from 'tamagui';
 
 const getDummyImage = (w: number, h: number) => ({
 	width: w,
@@ -223,8 +222,6 @@ export const data: JournalItem[] = [
 ];
 
 export default function Home() {
-	const router = useRouter();
-
 	const [reversedJournal, setReversedJournal] = useState<string[]>([]);
 
 	const onJournalReverse = (date: string) => {
@@ -260,19 +257,11 @@ export default function Home() {
 					<Entry entry={item} isLast={index === section.data.length - 1} />
 				)}
 			/>
-			<Button
-				pos="absolute"
-				bottom="$3"
-				right="$3"
-				size="$5"
-				p="$0"
-				aspectRatio={1}
-				zIndex={2000}
-				theme="blue"
-				elevation="$1"
-				onPress={() => router.push('/create')}
-				icon={<ThemedIcon name="plus" size={24} />}
-			/>
+			<Fab w={55} h={55} onPress={() => router.push('/create')}>
+				<FabIcon
+					as={() => <ThemedIcon name="plus" size={24} color="$white" />}
+				/>
+			</Fab>
 		</Container>
 	);
 }

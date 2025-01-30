@@ -1,14 +1,9 @@
-import {
-	Container,
-	HStack,
-	TextStyled,
-	VStack,
-} from '@/components/custom/syledComponents';
+import { TextStyled } from '@/components/custom/CustomComponents';
 import { shadeColor } from '@/libs/utils';
 import { Ionicons } from '@expo/vector-icons';
+import { Center, HStack, VStack } from '@gluestack-ui/themed';
 import moment from 'moment';
 import { useMemo } from 'react';
-import { ScrollView, Square, View } from 'tamagui';
 
 export default function OverallHabits() {
 	// const { habits, setHabits } = useHabitContext();
@@ -36,12 +31,12 @@ export default function OverallHabits() {
 
 function WeeklyHabitItem({ habit }: { habit: Habit }) {
 	return (
-		<VStack br="$3" py="$2" gap="$2" bw={1} boc="$borderColor">
+		<VStack borderRadius="$sm" py="$2" gap="$2" borderWidth={1}>
 			<HStack gap="$3" px="$2">
-				<Square bg={habit.color as any} br="$2" size="$3">
+				<Center bg={habit.color as any} borderWidth="$2" w="$3" h="$3">
 					<Ionicons name={habit.icon as any} size={22} color="white" />
-				</Square>
-				<TextStyled fow={600} children={habit.name} />
+				</Center>
+				<TextStyled fontWeight={600} children={habit.name} />
 			</HStack>
 			<HabitHeatmap habit={habit} />
 		</VStack>
@@ -439,28 +434,29 @@ export function HabitHeatmap({ habit }: { habit: Habit }) {
 			Rerum.WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWQ
 		</TextStyled>
 	);
-	return (
-		<View>
-			<ScrollView horizontal contentOffset={{ x: 100000, y: 0 }}>
-				<View fd="column" fw="wrap" h={20 * 7} px="$2">
-					{dd.map((status, index) => (
-						<Square size={20} key={index} p={1}>
-							<Square
-								br="$1"
-								w="100%"
-								h="100%"
-								bg={
-									(status
-										? habit.color
-										: shadeColor(habit.color, 200)) as any
-								}
-							/>
-						</Square>
-					))}
-				</View>
-			</ScrollView>
-		</View>
-	);
+	
+	// return (
+	// 	<View>
+	// 		<ScrollView horizontal contentOffset={{ x: 100000, y: 0 }}>
+	// 			<View fd="column" fw="wrap" h={20 * 7} px="$2">
+	// 				{dd.map((status, index) => (
+	// 					<Square size={20} key={index} p={1}>
+	// 						<Square
+	// 							br="$1"
+	// 							w="100%"
+	// 							h="100%"
+	// 							bg={
+	// 								(status
+	// 									? habit.color
+	// 									: shadeColor(habit.color, 200)) as any
+	// 							}
+	// 						/>
+	// 					</Square>
+	// 				))}
+	// 			</View>
+	// 		</ScrollView>
+	// 	</View>
+	// );
 }
 
 const generateMonthSpans = (

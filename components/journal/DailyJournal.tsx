@@ -1,7 +1,10 @@
+import { Card, Heading, HStack, View } from '@gluestack-ui/themed';
 import moment from 'moment';
-import { Card, H4, H5, Paragraph, View, XStack } from 'tamagui'; //prettier-ignore
-import { IconButton } from '../Icon';
-import { useState } from 'react';
+import {
+	HeadingStyled,
+	MyButtonIcon,
+	TextStyled,
+} from '../custom/CustomComponents';
 
 interface DailyJournalTitleProps {
 	date: string;
@@ -19,22 +22,31 @@ export function DailyJournalTitle({
 	entryLength,
 }: DailyJournalTitleProps) {
 	return (
-		<View px="$4" gap="$2">
-			<XStack py="$3" ai="center" jc="space-between">
-				<H4>{moment(date).format('DD MMM YYYY')}</H4>
-				
+		<View px="$4">
+			<HStack py="$3" alignItems="center" justifyContent="space-between">
+				<HeadingStyled size="md" fontFamily="Inter" fontWeight={600}>
+					{moment(date).format('DD MMM YYYY')}
+				</HeadingStyled>
+
 				{entryLength > 1 && (
-					<IconButton
+					<MyButtonIcon
+						borderRadius="$full"
 						onPress={onReverse}
 						name={isReversed ? 'arrow-up' : 'arrow-down'}
 					/>
 				)}
-			</XStack>
-			<Card p="$3" bg="$blue4">
-				<H5 color="$blue11" fontWeight="600">
+			</HStack>
+			<Card
+				p="$3"
+				bg="$primary0"
+				borderColor="$primary200"
+				variant="outline"
+				elevation="$0"
+			>
+				<Heading size="md" color="$blue11" fontWeight="600">
 					Tentang Hari ini
-				</H5>
-				<Paragraph>{summary}</Paragraph>
+				</Heading>
+				<TextStyled>{summary}</TextStyled>
 			</Card>
 		</View>
 	);

@@ -1,38 +1,37 @@
 import { Octicons } from '@expo/vector-icons';
 import { ReactNode } from 'react';
-import { SizableText } from 'tamagui';
-import { MyTouchableOpacity } from './custom/CustomComponents';
-import { HStack } from './custom/syledComponents';
+import { MyTouchableOpacity, ThemedIcon } from './custom/CustomComponents';
+import { TextStyled } from './custom/CustomComponents';
+import { HStack } from '@gluestack-ui/themed';
+import { Badge, BadgeText, BadgeIcon } from '@gluestack-ui/themed';
 
-interface BadgeProps {
+interface TagsProps {
 	children: ReactNode;
 	withCloseButton?: boolean;
 	onClose?: () => void;
 }
 
-export default function Badge(props: BadgeProps) {
+export default function Tags(props: TagsProps) {
 	const { children, withCloseButton, onClose } = props;
 
 	return (
-		<HStack
-			bg="$blue3"
-			borderRadius="$2"
+		<Badge
+			variant="outline"
+			borderWidth={1.2}
+			borderColor="$primary200"
+			borderRadius="$md"
+			px="$2.5"
+			py="$0.5"
+			alignItems="center"
+			pr={withCloseButton ? '$2' : undefined}
 			gap="$2"
-			px="$2"
-			borderWidth={1}
-			borderColor="$blue8"
 		>
-			<SizableText
-				color="$blue10Dark"
-				fontSize="$3"
-				fontWeight="bold"
-				children={children}
-			/>
+			<BadgeText>{children}</BadgeText>
 			{withCloseButton && (
 				<MyTouchableOpacity onPress={onClose}>
-					<Octicons name="x" size={16} color="$color10" />
+					<BadgeIcon as={() => <ThemedIcon name="x" size={16} />} />
 				</MyTouchableOpacity>
 			)}
-		</HStack>
+		</Badge>
 	);
 }

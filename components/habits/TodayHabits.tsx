@@ -1,46 +1,30 @@
-import {
-	Container,
-	HStack,
-	TextStyled,
-} from '@/components/custom/syledComponents';
+import { TextStyled } from '@/components/custom/CustomComponents';
+import { useDebouncedCallback } from '@/hooks/useDebounce';
 import { shadeColor } from '@/libs/utils';
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { getTokens, Spacer, Square, View } from 'tamagui';
 import { MyTouchableOpacity } from '../custom/CustomComponents';
 import { useHabitContext } from './HabitPageContext';
-
-function splitArray<T>(arr: T[], index: number) {
-	return [arr.slice(0, index), arr[index], arr.slice(index + 1)] as const;
-}
+import { Box, Center, HStack, View } from '@gluestack-ui/themed';
 
 export default function TodayHabit() {
 	const { habits, setHabits } = useHabitContext();
-	const tokens = getTokens();
 
-	const onItemPress = (index: number) => {
-		setHabits((prevHabits) => {
-			const updatedHabit = {
-				...prevHabits[index],
-				isDones: prevHabits[index].isDones.map((done, i) =>
-					i === 6 ? !done : done
-				),
-			};
-			return [
-				...prevHabits.slice(0, index),
-				updatedHabit,
-				...prevHabits.slice(index + 1),
-			];
+	const onItemPress = useDebouncedCallback((habitId: number) => {
+		setHabits((draft) => {
+			const todo = draft.find((e) => e.id === habitId)!;
+			todo.isDones[6] = !todo.isDones[6];
 		});
-	};
+	}, 0);
 
 	return (
-		<Container>
+		<Box>
 			<FlatList
-				contentContainerStyle={{
-					paddingBlock: tokens.space.$3.val,
-					paddingInline: tokens.space.$4.val,
-				}}
+				// contentContainerStyle={{
+				// paddingBlock: tokens.space.$3.val,
+				// paddingInline: tokens.space.$4.val,
+				// }}
 				data={habits}
 				keyExtractor={(item) => item.id.toString()}
 				ItemSeparatorComponent={() => <View h={12} />}
@@ -48,11 +32,11 @@ export default function TodayHabit() {
 					<HabitItem
 						habit={item}
 						isActive={Boolean(item.isDones[6])}
-						onPress={() => onItemPress(index)}
+						onPress={() => onItemPress(item.id)}
 					/>
 				)}
 			/>
-		</Container>
+		</Box>
 	);
 }
 
@@ -63,34 +47,42 @@ interface HabitItemProps {
 }
 
 function HabitItem({ habit, isActive, onPress }: HabitItemProps) {
+	const [checked, setChecked] = useState(isActive);
+
+	const _onPress = () => {
+		setChecked((e) => !e);
+		onPress();
+	};
+
+	useEffect(() => {
+		setChecked(isActive);
+	}, [isActive]);
+
 	return (
 		<HStack
 			p="$2"
 			gap="$3"
 			borderWidth={1}
 			borderColor="$borderColor"
-			pressStyle={{
-				backgroundColor: '$backgroundPress',
-			}}
-			onPress={onPress}
-			borderRadius="$3"
+			$pressed-backgroundColor="$backgroundDark100"
+ 			borderRadius="$3"
 			justifyContent="space-between"
 		>
-			<Square backgroundColor={habit.color} borderRadius="$2" size="$3">
+			<Center backgroundColor={habit.color} borderRadius="$2" w="$3" h="$3">
 				<Ionicons name={habit.icon as any} size={22} color="white" />
-			</Square>
+			</Center>
 			<TextStyled fontWeight={600} children={habit.name} />
-			<Spacer flex={1} />
-			<MyTouchableOpacity>
-				<Square
-					size="$3"
-					borderRadius="$4"
+			<Box flex={1} />
+			<MyTouchableOpacity onPress={_onPress}>
+				<Center
+					w="$3"
+					h="$3"
+					borderRadius="$lg"
 					borderWidth={1}
-					bg={isActive ? shadeColor(habit.color, 100) : undefined}
+					bg={checked ? shadeColor(habit.color, 100) : undefined}
 					borderColor={habit.color}
 				/>
 			</MyTouchableOpacity>
 		</HStack>
 	);
 }
-

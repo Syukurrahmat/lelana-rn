@@ -1,24 +1,26 @@
-import { Card, H2, H5, Paragraph, View } from 'tamagui';
-import { TextStyled } from '../custom/syledComponents';
+import { Card, Heading, View, VStack } from '@gluestack-ui/themed';
+import { HeadingStyled, TextStyled } from '../custom/CustomComponents';
 
 export default function HeaderHome() {
 	return (
-		<View px="$4">
-			<View py="$3" gap="$2">
-				<H2>Selamat Pagi</H2>
+		<View p="$4" gap="$4">
+			<VStack gap="$2">
+				<HeadingStyled size="2xl">Selamat Pagi</HeadingStyled>
 				<TextStyled>
 					Here&apos;s a basic starter to show navigating from one screen to
 					another.
 				</TextStyled>
-			</View>
-			<Card bg='$backgroundFocus' p='$3'>
-				<H5>Kata Kata Hari ini</H5>
-				<Paragraph lineHeight="$1" fontWeight="400">
+			</VStack>
+			<Card variant="outline" borderColor="$blue200" bg="$blue50" p="$3">
+				<HeadingStyled size="lg" mb="$1">
+					Kata Kata Hari ini
+				</HeadingStyled>
+				<TextStyled>
 					Lorem ipssum dolor sit, amet consectetur adipisicing elit. Esse
 					tempora sint veniam omnis, tempore culpa quasi hic corrupti
 					asperiores. Provident aliquam sequi quaerat, fugit nihil ipsum
 					deleniti velit aperiam deserunt?
-				</Paragraph>
+				</TextStyled>
 			</Card>
 		</View>
 	);
