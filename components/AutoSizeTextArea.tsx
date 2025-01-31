@@ -1,28 +1,42 @@
 import { useToken } from '@gluestack-ui/themed';
-import { useRef, useState } from 'react';
-import { TextInput } from 'react-native';
+import { forwardRef, useState } from 'react';
+import { TextInput, TextInputProps } from 'react-native';
 
-export function AutoSizeTextArea(props: ControledValueProps<string>) {
-	const { value, onChange } = props;
-	const [height, _setHeight] = useState(0);
+type AutoSizeTextAreaProps = Omit<Omit<TextInputProps, 'value'>, 'onChange'> &
+	ControledValueProps<string> & { minHeight?: number };
 
-	return (
-		<TextInput
-			multiline
-			autoFocus={!value}
-			value={value}
-			onChangeText={onChange}
-			textAlignVertical="top"
-			style={{
-				height: height < 85 ? 85 : height,
-				flex: 1,
-				fontFamily: 'Inter',
-				fontSize: useToken('fontSizes', 'md'),
-			}}
-			placeholder="Tulis Apa yang kamu lakukan sekarang"
-			onContentSizeChange={(e) => {
-				if (value) _setHeight(e.nativeEvent.contentSize.height + 20);
-			}}
-		/>
-	);
-}
+export const AutoSizeTextArea = forwardRef<TextInput, AutoSizeTextAreaProps>(
+	function AutoSizeTextArea(props, ref) {
+		const {
+			value,
+			onChange,
+			minHeight = 85,
+			style,
+			...textInputPops
+		} = props;
+		const [height, _setHeight] = useState(0);
+		
+		return (
+			<TextInput
+				multiline
+				{...textInputPops}
+				ref={ref}
+				value={value || ''}
+				onChangeText={onChange}
+				textAlignVertical="top"
+				style={[
+					{
+						height: height < minHeight ? minHeight : height,
+						flex: 1,
+						fontFamily: 'Inter',
+						fontSize: useToken('fontSizes', 'md'),
+					},
+					style,
+				]}
+				onContentSizeChange={(e) => {
+					if (value) _setHeight(e.nativeEvent.contentSize.height + 20);
+				}}
+			/>
+		);
+	}
+);

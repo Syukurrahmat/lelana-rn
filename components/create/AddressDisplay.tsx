@@ -11,7 +11,7 @@ type LocationPickerProps = TouchableOpacityProps & {
 
 export function AddressDisplay({ location, ...props }: LocationPickerProps) {
 	return (
-		<Collapsable isOpen={true}>
+		<Collapsable isOpen={!!location}>
 			<MyTouchableOpacity {...props}>
 				<HStack gap="$2" alignItems="center">
 					<ThemedIcon name="map-pin" size={18} color="$trueGray500" />

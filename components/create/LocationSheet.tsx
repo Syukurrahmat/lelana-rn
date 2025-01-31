@@ -1,86 +1,97 @@
 import { CreateFormValues } from '@/context/CreateFormContext';
-import { Button, ButtonText, View } from '@gluestack-ui/themed';
+import {
+	View
+} from '@gluestack-ui/themed';
 import Mapbox from '@rnmapbox/maps';
 import { router } from 'expo-router';
-import React, { forwardRef, useRef } from 'react';
+import React from 'react';
 import { UseControllerReturn } from 'react-hook-form';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
-import { TextStyled, ThemedIcon } from '../custom/CustomComponents';
+import ButtonListItem from '../ButtonListItem';
+import { TextStyled } from '../custom/CustomComponents';
 
-type LocationSheetProps = UseControllerReturn<CreateFormValues, 'location'>;
+type LocationSheetProps = UseControllerReturn<CreateFormValues, 'location'> & {
+	sheetRef: React.RefObject<ActionSheetRef>;
+};
 
-export const LocationSheet = forwardRef<ActionSheetRef, LocationSheetProps>(
-	function LocationSheet(props, ref) {
-		const { field } = props;
-		const { value, onChange } = field;
+export function LocationSheet(props: LocationSheetProps) {
+	const { field, sheetRef } = props;
+	const { value, onChange } = field;
 
-		return (
-			<View>
-				<ActionSheet
-					ref={ref}
-					overdrawEnabled
-					headerAlwaysVisible
-					gestureEnabled
-				>
+	const coordinate = value && [value.lng, value.lat];
+
+	return (
+		<View>
+			<ActionSheet
+				ref={sheetRef}
+				overdrawEnabled
+				headerAlwaysVisible
+				indicatorStyle={{ width: '35%' }}
+				gestureEnabled
+				defaultOverlayOpacity={0.5}
+				zIndex={-1}
+			>
+				<View pt="$3" pb="$6">
 					<View px="$4">
-						<TextStyled fontWeight="bold" fontSize="$md">
+						<TextStyled fontWeight="600" fontSize="$lg">
 							{value?.address}
 						</TextStyled>
 					</View>
 
-					{value && (
-						<Mapbox.MapView
-							scaleBarEnabled={false}
-							logoEnabled={false}
-							scrollEnabled={false}
-							pitchEnabled={false}
-							rotateEnabled={false}
-							zoomEnabled={false}
-							attributionEnabled={false}
-							style={{ flex: 1, height: 180, marginBlock: 16 }}
-						>
-							<Mapbox.Camera
-								centerCoordinate={[value.lng, value.lat]}
-								zoomLevel={13}
-							/>
-							<Mapbox.PointAnnotation
-								id="marker-1"
-								coordinate={[value.lng, value.lat]}
-								children={<View />}
-							/>
-						</Mapbox.MapView>
+					{coordinate && (
+						<View height={200}>
+							<Mapbox.MapView
+								scaleBarEnabled={false}
+								logoEnabled={false}
+								scrollEnabled={false}
+								pitchEnabled={false}
+								rotateEnabled={false}
+								zoomEnabled={false}
+								attributionEnabled={false}
+								style={{ flex: 1, marginBlock: 16 }}
+							>
+								<Mapbox.Camera
+									animationMode="none"
+									centerCoordinate={coordinate}
+									zoomLevel={14}
+								/>
+								<Mapbox.PointAnnotation
+									id="marker-1"
+									coordinate={coordinate}
+									children={<View />}
+								/>
+							</Mapbox.MapView>
+						</View>
 					)}
 
-					<View pb="$3">
-						<Button
-							children={<ThemedIcon name="map-pin" size={18} />}
-							// children="Ubah Lokasi"
+					<View>
+						<ButtonListItem
+							iconName="map-pin"
+							label="Ubah Lokasi"
 							onPress={() => {
-								// close();
-								setTimeout(() => router.push('/mapPicker', {}), 200);
+								sheetRef.current?.hide();
+								setTimeout(() => router.push('/mapPicker'), 150);
 							}}
 						/>
-						<Button
-							children={<ThemedIcon name="edit-3" size={18} />}
-							// children="Ubah Nama Lokasi"
-							onPress={() => {}}
-						/>
-						<Button
-							// br="$0"
-							// bg="white"
-							// h="$5"
-							// jc="flex-start"
-							// gap="$1"
-							children={<ThemedIcon name="trash" size={18} />}
-							// children="Hapus Lokasi"
+						<ButtonListItem
+							iconName="edit-3"
+							label="Ubah Nama Lokasi"
 							onPress={() => {
 								// close();
-								setTimeout(() => onChange(null), 200);
+								// setTimeout(() => router.push('/mapPicker', {}), 150);
+							}}
+						/>
+						<ButtonListItem
+							iconName="trash"
+							label="Hapus Lokasi"
+							onPress={() => {
+								sheetRef.current?.hide();
+								setTimeout(() => onChange(null), 150);
 							}}
 						/>
 					</View>
-				</ActionSheet>
-			</View>
-		);
-	}
-);
+				</View>
+			</ActionSheet>
+		</View>
+	);
+}

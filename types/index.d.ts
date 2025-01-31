@@ -123,6 +123,6 @@ interface ChildrenProps {
 
 
 type ControledValueProps<T> = {
-    value: T
+    value: T | null
     onChange?: (value: T) => void
 }

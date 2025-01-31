@@ -7,7 +7,6 @@ export default function CenteredMarker({ size = 45 }) {
 
 	return (
 		<Image
-			borderWidth={1}
 			style={{
 				position: 'absolute',
 				height: size,
@@ -15,8 +14,8 @@ export default function CenteredMarker({ size = 45 }) {
 				bottom: '50%',
 				left: safeAreaDimention.width / 2 - size / 2,
 			}}
-			alt='centered marker'
-			source={{ uri: require('@/assets/images/map-marker.png') }}
+			alt="centered marker"
+			source={require('@/assets/images/map-marker.png')}
 		/>
 	);
 }

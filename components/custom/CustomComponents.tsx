@@ -52,8 +52,8 @@ export const MyButtonIcon = ({
 		>
 			<ThemedIcon
 				name={name}
-				size={(iconSize = 22)}
-				color={(iconColor = '$trueGray500')}
+				size={(iconSize || 22)}
+				color={(iconColor || '$trueGray500')}
 			/>
 		</Button>
 	);
