@@ -1,13 +1,13 @@
 import { TextStyled } from '@/components/custom/CustomComponents';
 import { useHabitContext } from '@/components/habits/HabitPageContext';
+import { useDebouncedCallback } from '@/hooks/useDebounce';
 import { shadeColor } from '@/libs/utils';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
+import { getVariableValue, Square, Stack, View, XStack } from 'tamagui';
 import { MyTouchableOpacity } from '../custom/CustomComponents';
-import { useState, useEffect } from 'react';
-import { useDebouncedCallback } from '@/hooks/useDebounce';
-import { Box, Center, HStack, View, VStack } from '@gluestack-ui/themed';
 
 export default function WeekHabits() {
 	const { habits, setHabits } = useHabitContext();
@@ -23,17 +23,15 @@ export default function WeekHabits() {
 	);
 
 	return (
-		<Box>
+		<View>
 			<FlatList
-				contentContainerStyle={
-					{
-						// paddingBlock: tokens.space.$3.val,
-						// paddingInline: tokens.space.$4.val,
-					}
-				}
+				contentContainerStyle={{
+					paddingBlock: getVariableValue('$3', 'space'),
+					paddingInline: getVariableValue('$4', 'space'),
+				}}
 				data={habits}
 				keyExtractor={(item) => item.id.toString()}
-				ItemSeparatorComponent={() => <Box h={12} />}
+				ItemSeparatorComponent={() => <View height={12} />}
 				renderItem={({ item, index }) => (
 					<WeeklyHabitItem
 						key={item.id}
@@ -42,7 +40,7 @@ export default function WeekHabits() {
 					/>
 				)}
 			/>
-		</Box>
+		</View>
 	);
 }
 
@@ -53,25 +51,24 @@ interface WeeklyHabitItemProps {
 
 function WeeklyHabitItem({ habit, onItemPress }: WeeklyHabitItemProps) {
 	return (
-		<VStack
+		<Stack
 			borderRadius="$3"
 			p="$2"
 			gap="$2"
 			borderWidth={1}
 			borderColor="$borderColor"
 		>
-			<HStack gap="$3">
-				<Center
-					backgroundColor={habit.color}
+			<XStack gap="$3" ai='center'>
+				<Square
+					backgroundColor={habit.color as any}
 					borderRadius="$2"
-					w="$3"
-					h="$3"
+					size="$3"
 				>
 					<Ionicons name={habit.icon as any} size={22} color="white" />
-				</Center>
+				</Square>
 				<TextStyled fontWeight={600} children={habit.name} />
-			</HStack>
-			<HStack justifyContent="space-between" gap="$2">
+			</XStack>
+			<XStack justifyContent="space-between" gap="$2">
 				{moment.weekdaysShort().map((day, index) => (
 					<DailyHabit
 						key={day}
@@ -81,8 +78,8 @@ function WeeklyHabitItem({ habit, onItemPress }: WeeklyHabitItemProps) {
 						onPress={() => onItemPress(index)}
 					/>
 				))}
-			</HStack>
-		</VStack>
+			</XStack>
+		</Stack>
 	);
 }
 
@@ -106,16 +103,15 @@ function DailyHabit({ onPress, isActive, day, color }: DailyHabitProps) {
 	}, [isActive]);
 
 	return (
-		<View alignItems="center">
-			<TextStyled fontSize="$xs" color="$color9" children={day} />
+		<View alignItems="center" gap='$1'>
+			<TextStyled fontSize="$2" color="$color9" children={day} />
 			<MyTouchableOpacity onPress={_onPress}>
-				<Center
-					w="$2.5"
-					h="$2.5"
+				<Square
+					size="$2.5"
 					borderRadius="$4"
 					borderWidth={1}
-					borderColor={color}
-					bg={checked ? shadeColor(color, 100) : undefined}
+					borderColor={color as any}
+					bg={checked ? (shadeColor(color, 100) as any) : undefined}
 				/>
 			</MyTouchableOpacity>
 		</View>

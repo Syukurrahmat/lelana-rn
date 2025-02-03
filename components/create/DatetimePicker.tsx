@@ -4,9 +4,8 @@ import { useDatetimePicker } from '@/hooks/useDatetimePicker';
 import moment from 'moment';
 import { useController } from 'react-hook-form';
 import { TouchableOpacityProps } from 'react-native';
-// import { ThemedIcon } from '../Icon';
+ import { XStack } from 'tamagui';
 import { MyTouchableOpacity } from '../custom/CustomComponents';
-import { HStack } from '@gluestack-ui/themed';
 
 export function DatetimePicker(props: TouchableOpacityProps) {
 	const { control } = useCreateForm();
@@ -19,12 +18,12 @@ export function DatetimePicker(props: TouchableOpacityProps) {
 
 	return (
 		<MyTouchableOpacity onPress={openDatetimePicker} {...props}>
-			<HStack gap="$2" alignItems="center">
-				<ThemedIcon name="calendar" size={18} color="$primary500" />
-				<TextStyled color="$primary500" fontSize="$md" fontWeight="500">
+			<XStack gap="$2.5" alignItems="center">
+				<ThemedIcon name="calendar" size={18} color="$blue10" />
+				<TextStyled color="$blue10">
 					{moment(value).format('DD MMMM YYYY, HH:mm')}
 				</TextStyled>
-			</HStack>
+			</XStack>
 		</MyTouchableOpacity>
 	);
 }

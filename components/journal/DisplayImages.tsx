@@ -1,25 +1,28 @@
 import { getImageDimention } from '@/libs/utils';
-import { Box, HStack, Image, ScrollView, View } from '@gluestack-ui/themed';
-interface DisplayImagesProps {
+import { Image, ScrollView, ScrollViewProps, View, XStack } from 'tamagui';
+
+interface DisplayImagesProps extends ScrollViewProps {
 	images: EntryImageData[];
 	leftOffset: number;
 }
 
-export default function DisplayImages({
-	images,
-	leftOffset = 0,
-}: DisplayImagesProps) {
+export default function DisplayImages(props: DisplayImagesProps) {
+	const { images, leftOffset, ...scrollViewProps } = props;
 	return (
-		<ScrollView horizontal mt="$3.5" showsHorizontalScrollIndicator={false}>
-			{!!leftOffset && <Box w={leftOffset} />}
-			<HStack px="$4" gap="$2">
+		<ScrollView
+			horizontal
+			showsHorizontalScrollIndicator={false}
+			{...scrollViewProps}
+		>
+			{!!leftOffset && <View width={leftOffset} />}
+			<XStack px="$4" gap="$2">
 				{getImageDimention(images, leftOffset).map((e, i) => (
 					<View
 						key={i}
 						borderWidth={1}
-						borderColor="$borderLight200"
+						borderColor="$borderColor"
 						overflow="hidden"
-						borderRadius="$md"
+						borderRadius="$4"
 					>
 						<Image
 							key={i}
@@ -30,7 +33,7 @@ export default function DisplayImages({
 						/>
 					</View>
 				))}
-			</HStack>
+			</XStack>
 		</ScrollView>
 	);
 }

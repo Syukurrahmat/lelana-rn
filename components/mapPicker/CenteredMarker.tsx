@@ -1,6 +1,6 @@
 import { useAppContext } from '@/context/AppContext';
-import { Image } from '@gluestack-ui/themed';
-import React from 'react';
+ import React from 'react';
+import { Image } from 'tamagui';
 
 export default function CenteredMarker({ size = 45 }) {
 	const { safeAreaDimention } = useAppContext();

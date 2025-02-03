@@ -1,10 +1,10 @@
-import { View } from '@gluestack-ui/themed';
-import { ReactNode, useState } from 'react';
+ import { ReactNode, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
 	withTiming,
 } from 'react-native-reanimated';
+import { View } from 'tamagui';
 
 interface CollapsableProps {
 	children?: ReactNode;
@@ -29,7 +29,7 @@ export default function Collapsable({ children, isOpen }: CollapsableProps) {
 
 	return (
 		<Animated.View style={[collapsableStyle, { overflow: 'hidden' }]}>
-			<View position="absolute" w="100%" onLayout={onLayout}>
+			<View position="absolute" width="100%" onLayout={onLayout}>
 				{children}
 			</View>
 		</Animated.View>

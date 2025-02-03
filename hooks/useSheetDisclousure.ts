@@ -17,9 +17,9 @@ export function useSheetDisclousure(options: Options) {
 	}, [])
 
 	const open = () => {
-		BackHandler.addEventListener('hardwareBackPress', backHandler);
 		Keyboard.dismiss()
 		_setOpened(true);
+		BackHandler.addEventListener('hardwareBackPress', backHandler);
 	};
 
 	const close = () => {
@@ -48,6 +48,5 @@ export function useDisclousure(initialValue: boolean) {
 	const close = () => setOpened(false);
 	const toggle = () => setOpened(!opened)
 
-
-	return { opened, open, close, toggle}
+	return { opened, open, close, setOpened, toggle}
 }

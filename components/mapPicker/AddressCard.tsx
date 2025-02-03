@@ -1,10 +1,10 @@
 import { TextStyled } from '@/components/custom/CustomComponents';
 import { useCreateForm } from '@/context/CreateFormContext';
 import { getAddressFromCoord } from '@/libs/geocoding';
-import { Button, ButtonText, Card, HStack, Spinner } from '@gluestack-ui/themed';
 import { Position } from '@rnmapbox/maps/lib/typescript/src/types/Position';
 import { router } from 'expo-router';
 import React from 'react';
+import { Button, Card, Spinner, XStack } from 'tamagui';
 
 interface AddressCardProps {
 	address?: string;
@@ -15,11 +15,13 @@ export default function AddressCard({ address, coordinate }: AddressCardProps) {
 
 	const onSubmit = async () => {
 		const [lng, lat] = coordinate;
+		address = address || (await getAddressFromCoord(lat, lng));
 
 		form.setValue('location', {
 			lat,
 			lng,
-			address: address || (await getAddressFromCoord(lat, lng)),
+			address,
+			displayAddress: address,
 		});
 
 		router.back();
@@ -27,7 +29,7 @@ export default function AddressCard({ address, coordinate }: AddressCardProps) {
 
 	return (
 		<Card gap="$3" p="$3" elevation="$1">
-			<HStack minHeight={56} alignItems="center" gap="$2.5">
+			<XStack minHeight={56} alignItems="center" gap="$2.5">
 				{address ? (
 					<TextStyled>{address}</TextStyled>
 				) : (
@@ -41,11 +43,9 @@ export default function AddressCard({ address, coordinate }: AddressCardProps) {
 						</TextStyled>
 					</>
 				)}
-			</HStack>
+			</XStack>
 
-			<Button onPress={onSubmit}>
-				<ButtonText>Pilih Lokasi </ButtonText>
-			</Button>
+			<Button onPress={onSubmit}>Pilih Lokasi</Button>
 		</Card>
 	);
 }

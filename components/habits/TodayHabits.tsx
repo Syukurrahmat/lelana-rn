@@ -2,11 +2,12 @@ import { TextStyled } from '@/components/custom/CustomComponents';
 import { useDebouncedCallback } from '@/hooks/useDebounce';
 import { shadeColor } from '@/libs/utils';
 import { Ionicons } from '@expo/vector-icons';
+import { getVariableValue } from '@tamagui/core';
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
+import { Spacer, Square, View, XStack } from 'tamagui';
 import { MyTouchableOpacity } from '../custom/CustomComponents';
 import { useHabitContext } from './HabitPageContext';
-import { Box, Center, HStack, View } from '@gluestack-ui/themed';
 
 export default function TodayHabit() {
 	const { habits, setHabits } = useHabitContext();
@@ -19,16 +20,16 @@ export default function TodayHabit() {
 	}, 0);
 
 	return (
-		<Box>
+		<View>
 			<FlatList
-				// contentContainerStyle={{
-				// paddingBlock: tokens.space.$3.val,
-				// paddingInline: tokens.space.$4.val,
-				// }}
+				contentContainerStyle={{
+					paddingBlock: getVariableValue('$3', 'space'),
+					paddingInline: getVariableValue('$4', 'space'),
+				}}
 				data={habits}
 				keyExtractor={(item) => item.id.toString()}
-				ItemSeparatorComponent={() => <View h={12} />}
-				renderItem={({ item, index }) => (
+				ItemSeparatorComponent={() => <View height={10} />}
+				renderItem={({ item }) => (
 					<HabitItem
 						habit={item}
 						isActive={Boolean(item.isDones[6])}
@@ -36,7 +37,7 @@ export default function TodayHabit() {
 					/>
 				)}
 			/>
-		</Box>
+		</View>
 	);
 }
 
@@ -59,30 +60,31 @@ function HabitItem({ habit, isActive, onPress }: HabitItemProps) {
 	}, [isActive]);
 
 	return (
-		<HStack
+		<XStack
 			p="$2"
 			gap="$3"
+			ai="center"
+			jc="space-between"
 			borderWidth={1}
 			borderColor="$borderColor"
-			$pressed-backgroundColor="$backgroundDark100"
- 			borderRadius="$3"
-			justifyContent="space-between"
+			pressStyle={{ bg: '$backgroundPress' }}
+			borderRadius="$3"
+			onPress={_onPress}
 		>
-			<Center backgroundColor={habit.color} borderRadius="$2" w="$3" h="$3">
+			<Square bg={habit.color as any} borderRadius="$2" size="$3">
 				<Ionicons name={habit.icon as any} size={22} color="white" />
-			</Center>
+			</Square>
 			<TextStyled fontWeight={600} children={habit.name} />
-			<Box flex={1} />
+			<Spacer flex={1} />
 			<MyTouchableOpacity onPress={_onPress}>
-				<Center
-					w="$3"
-					h="$3"
-					borderRadius="$lg"
+				<Square
+					size="$3"
+					borderRadius="$5"
 					borderWidth={1}
-					bg={checked ? shadeColor(habit.color, 100) : undefined}
-					borderColor={habit.color}
+					bg={checked ? (shadeColor(habit.color, 100) as any) : undefined}
+					borderColor={habit.color as any}
 				/>
 			</MyTouchableOpacity>
-		</HStack>
+		</XStack>
 	);
 }

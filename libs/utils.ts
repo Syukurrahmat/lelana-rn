@@ -16,12 +16,17 @@ export function combineAndGetUniqueArray<T>(...args: T[][]) {
 	return [...new Set([...args.flatMap(e => e)])]
 }
 
+export type ImageDataWithDimention = {
+	height: number;
+	width: number;
+	uri: string;
+}
 
-export function getImageDimention(imagesData: EntryImageData[], leftOffset: number) {
+export function getImageDimention(imagesData: EntryImageData[], horizontalSpace: number): ImageDataWithDimention[] {
 	if (imagesData.length === 0) return [];
 	const isSingle = imagesData.length === 1;
 
-	const dimension = Dimensions.get('window').width - leftOffset
+	const dimension = Dimensions.get('window').width - horizontalSpace
 	const maxW = isSingle ? dimension : dimension * 0.8
 	const minW = dimension * 0.6
 

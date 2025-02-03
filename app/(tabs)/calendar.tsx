@@ -1,9 +1,8 @@
 import { MonthCalender } from '@/components/calendar/MonthCalender';
- import { Octicons } from '@expo/vector-icons';
-import { Box, Button } from '@gluestack-ui/themed';
-import React, { useCallback, useMemo, useState } from 'react';
-import { Dimensions, FlatList, ListRenderItem } from 'react-native';
- 
+ import React, { useCallback, useState } from 'react';
+import { FlatList, ListRenderItem } from 'react-native';
+import { View } from 'tamagui';
+
 const COUNT_MONTH = 50;
 
 function generateInitialMonth() {
@@ -30,7 +29,7 @@ const initialMonthList = generateInitialMonth();
 export default function Calendar() {
 	const [months, setMonth] = useState(initialMonthList);
 
-	const calendarHeight = 100
+	const calendarHeight = 100;
 	const renderItem: ListRenderItem<Date> = useCallback(
 		({ item }) => (
 			<MonthCalender height={calendarHeight} startOfmonth={item} />
@@ -41,7 +40,7 @@ export default function Calendar() {
 	const loadMoreDates = () => {};
 
 	return (
-		<Box position="relative">
+		<View position="relative">
 			<FlatList
 				data={months}
 				renderItem={renderItem}
@@ -67,6 +66,6 @@ export default function Calendar() {
 				aspectRatio={1}
 				icon={<Octicons name="calendar" size={22} />}
 			/> */}
-		</Box>
+		</View>
 	);
 }

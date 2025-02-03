@@ -1,9 +1,8 @@
 import { TextStyled } from '@/components/custom/CustomComponents';
-import { Spinner } from '@gluestack-ui/themed';
-import { HStack, View } from '@gluestack-ui/themed';
 import moment from 'moment';
 import React, { memo, useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { Spinner, View, XStack } from 'tamagui';
 
 interface MonthCalendarProps {
 	startOfmonth: Date;
@@ -31,9 +30,9 @@ export const MonthCalender = memo(function MonthCalender({
 	const calendar = useMemo(
 		() => (
 			<View gap="$2" px="$4" py="$2">
-				<HStack h={36} justifyContent="center">
-					<TextStyled fontSize="$lg">{monthFormatted}</TextStyled>
-				</HStack>
+				<XStack height={36} justifyContent="center">
+					<TextStyled fontSize="$4">{monthFormatted}</TextStyled>
+				</XStack>
 
 				<View
 					justifyContent="flex-start"
@@ -56,16 +55,16 @@ export const MonthCalender = memo(function MonthCalender({
 	}, []);
 
 	return (
-		<View h={height} justifyContent="center" alignItems="center">
+		<View height={height} justifyContent="center" alignItems="center">
 			{loaded ? (
 				calendar
 			) : (
-				<HStack gap="$2.5">
-					<TextStyled fontSize="$lg" textAlign="center">
+				<XStack gap="$2.5">
+					<TextStyled fontSize="$5" textAlign="center">
 						{monthFormatted}
 					</TextStyled>
 					<Spinner size="small" />
-				</HStack>
+				</XStack>
 			)}
 		</View>
 	);
@@ -76,10 +75,10 @@ const WeekDays = memo(function WeekDays() {
 		<>
 			{moment.weekdaysShort().map((day, index) => (
 				<View key={index} style={style.weekCellWrapper}>
-					<View flex={1} style={style.cell} w="100%">
+					<View flex={1} style={style.cell} width="100%">
 						<TextStyled
-							lineHeight="$md"
-							fontSize="$sm"
+							// lineHeight="$4"
+							fontSize="$3"
 							color="$color9"
 							textAlign="center"
 							children={day}
@@ -107,9 +106,7 @@ const Days = memo(function Days({ count }: { count: number }) {
 			{Array.from({ length: count }, (_, index) => (
 				<View key={index} style={style.dayCell} p={1}>
 					<View flex={1} style={style.cell}>
-						<TextStyled lineHeight="$md" textAlign="center">
-							{index + 1}
-						</TextStyled>
+						<TextStyled textAlign="center">{index + 1}</TextStyled>
 					</View>
 				</View>
 			))}

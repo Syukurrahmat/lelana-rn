@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useDebouncedValue<T>(inputValue: T, delay: number) {
     const [debouncedValue, setDebouncedValue] = useState(inputValue);
@@ -16,11 +16,10 @@ export function useDebouncedValue<T>(inputValue: T, delay: number) {
     return debouncedValue;
 }
 
-import { useRef } from "react";
 
 export function useDebouncedCallback<A extends any[]>(
     callback: (...args: A) => void,
-    wait: number
+    wait?: number
 ) {
     const argsRef = useRef<A>();
     const timeout = useRef<ReturnType<typeof setTimeout>>();

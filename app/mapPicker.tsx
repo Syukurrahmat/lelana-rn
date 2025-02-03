@@ -1,15 +1,14 @@
-// import { ThemedIcon } from '@/components/Icon';
 import AddressCard from '@/components/mapPicker/AddressCard';
 import CenteredMarker from '@/components/mapPicker/CenteredMarker';
 import { useAppContext } from '@/context/AppContext';
 import { useCreateForm } from '@/context/CreateFormContext';
 import { useAddressFromCoord } from '@/libs/geocoding';
-import { Input } from '@gluestack-ui/themed';
-import { Button, HStack, View } from '@gluestack-ui/themed';
+
 import MapboxGL from '@rnmapbox/maps';
 import { Position } from '@rnmapbox/maps/lib/typescript/src/types/Position';
 import { router } from 'expo-router';
 import React, { useMemo, useRef, useState } from 'react';
+import { Button, Input, View, XStack } from 'tamagui';
 
 const DEFAULT_COORD = [110.881503, -7.3749556];
 
@@ -61,7 +60,7 @@ export default function LocationPicker() {
 				<MapboxGL.UserLocation />
 			</MapboxGL.MapView>
 
-			<View p="$4" position="absolute" top={0} w="100%">
+			<View p="$4" position="absolute" top={0} width="100%">
 				<MapPickerHeader />
 			</View>
 			{/* 
@@ -80,7 +79,7 @@ export default function LocationPicker() {
 
 			<CenteredMarker />
 
-			<View p="$4" position="absolute" bottom={0} w="100%">
+			<View p="$4" position="absolute" bottom={0} width="100%">
 				<AddressCard address={address} coordinate={selectedPos} />
 			</View>
 		</View>
@@ -89,7 +88,7 @@ export default function LocationPicker() {
 
 function MapPickerHeader() {
 	return (
-		<HStack
+		<XStack
 			gap="$2"
 			bg="white"
 			elevation="$1"
@@ -105,6 +104,6 @@ function MapPickerHeader() {
 				{/* <ThemedIcon name="arrow-left" size={22} /> */}
 			</Button>
 			<Input p={0} bg="white" flex={1} />
-		</HStack>
+		</XStack>
 	);
 }

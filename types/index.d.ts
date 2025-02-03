@@ -1,13 +1,4 @@
-type JournalItem = {
-    id: number
-    date: string
-    entries: EntryItem[]
-    habits: JournalItemHabit[]
-    summary: string | null
-}
-
-
-type CreateEntryForm = {
+ type CreateEntryForm = {
     content: string;
     date: string;
     time: string;
@@ -84,7 +75,7 @@ type EntryItem = {
         width: number
         height: number
     }[]
-    tags: { name: String, id: number }[]
+    tags: { name: string, id: number }[]
 
     createdAt: string
     updatedAt: string

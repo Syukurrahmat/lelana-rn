@@ -6,7 +6,12 @@ import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 
 export type CreateFormValues = {
 	datetime: Date;
-	location: { lat: number; lng: number; address: string } | null;
+	location: {
+		lat: number;
+		lng: number;
+		address: string;
+		displayAddress: string;
+	} | null;
 	address: string | null;
 	content: string;
 	tags: string[];
@@ -23,6 +28,7 @@ export default function CreateFormProvider({ children }: ChildrenProps) {
 			tags: ['coba', 'xixixi'],
 			location: null,
 			address: null,
+			content: '',
 		},
 	});
 
@@ -32,7 +38,12 @@ export default function CreateFormProvider({ children }: ChildrenProps) {
 				const lat = pos.coords.latitude;
 				const lng = pos.coords.longitude;
 				const address = await getAddressFromCoord(lat, lng);
-				form.setValue('location', { lat, lng, address });
+				form.setValue('location', {
+					lat,
+					lng,
+					address,
+					displayAddress: address,
+				});
 			} else {
 				form.setValue('location', null);
 			}

@@ -1,9 +1,8 @@
 import { TextStyled } from '@/components/custom/CustomComponents';
-import { shadeColor } from '@/libs/utils';
 import { Ionicons } from '@expo/vector-icons';
-import { Center, HStack, VStack } from '@gluestack-ui/themed';
 import moment from 'moment';
 import { useMemo } from 'react';
+import { Square, Stack, XStack } from 'tamagui';
 
 export default function OverallHabits() {
 	// const { habits, setHabits } = useHabitContext();
@@ -31,15 +30,15 @@ export default function OverallHabits() {
 
 function WeeklyHabitItem({ habit }: { habit: Habit }) {
 	return (
-		<VStack borderRadius="$sm" py="$2" gap="$2" borderWidth={1}>
-			<HStack gap="$3" px="$2">
-				<Center bg={habit.color as any} borderWidth="$2" w="$3" h="$3">
+		<Stack borderRadius="$5" py="$2" gap="$2" borderWidth={1}>
+			<XStack gap="$3" px="$2">
+				<Square bg={habit.color as any} borderWidth="$2" size="$3">
 					<Ionicons name={habit.icon as any} size={22} color="white" />
-				</Center>
+				</Square>
 				<TextStyled fontWeight={600} children={habit.name} />
-			</HStack>
+			</XStack>
 			<HabitHeatmap habit={habit} />
-		</VStack>
+		</Stack>
 	);
 }
 
@@ -434,7 +433,7 @@ export function HabitHeatmap({ habit }: { habit: Habit }) {
 			Rerum.WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWQ
 		</TextStyled>
 	);
-	
+
 	// return (
 	// 	<View>
 	// 		<ScrollView horizontal contentOffset={{ x: 100000, y: 0 }}>

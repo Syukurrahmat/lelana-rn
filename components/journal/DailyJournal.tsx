@@ -1,10 +1,6 @@
-import { Card, Heading, HStack, View } from '@gluestack-ui/themed';
 import moment from 'moment';
-import {
-	HeadingStyled,
-	MyButtonIcon,
-	TextStyled,
-} from '../custom/CustomComponents';
+import { Card, H4, H5, View, XStack } from 'tamagui';
+import { MyButtonIcon, TextStyled } from '../custom/CustomComponents';
 
 interface DailyJournalTitleProps {
 	date: string;
@@ -14,38 +10,25 @@ interface DailyJournalTitleProps {
 	onReverse: () => void;
 }
 
-export function DailyJournalTitle({
-	date,
-	summary,
-	onReverse,
-	isReversed,
-	entryLength,
-}: DailyJournalTitleProps) {
+export function DailyJournalTitle(props: DailyJournalTitleProps) {
+	const { date, summary, onReverse, isReversed, entryLength } = props;
 	return (
 		<View px="$4">
-			<HStack py="$3" alignItems="center" justifyContent="space-between">
-				<HeadingStyled size="md" fontFamily="Inter" fontWeight={600}>
-					{moment(date).format('DD MMM YYYY')}
-				</HeadingStyled>
+			<XStack py="$2" alignItems="center" justifyContent="space-between">
+				<H4>{moment(date).format('DD MMM YYYY')}</H4>
 
 				{entryLength > 1 && (
 					<MyButtonIcon
-						borderRadius="$full"
+						circular
 						onPress={onReverse}
 						name={isReversed ? 'arrow-up' : 'arrow-down'}
 					/>
 				)}
-			</HStack>
-			<Card
-				p="$3"
-				bg="$primary0"
-				borderColor="$primary200"
-				variant="outline"
-				elevation="$0"
-			>
-				<Heading size="md" color="$blue11" fontWeight="600">
+			</XStack>
+			<Card theme="blue" p="$3" gap="$2" bw={1} borderColor="$blue8">
+				<H5 color="$blue10" fontWeight="600">
 					Tentang Hari ini
-				</Heading>
+				</H5>
 				<TextStyled>{summary}</TextStyled>
 			</Card>
 		</View>

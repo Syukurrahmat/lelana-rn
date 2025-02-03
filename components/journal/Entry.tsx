@@ -1,17 +1,15 @@
-import {
-	Box,
-	Center,
-	HStack,
-	useToken as getToken,
-	View,
-} from '@gluestack-ui/themed';
 import moment from 'moment';
-import Tags from '../Badge';
 import {
-	HeadingStyled,
-	MyButtonIcon,
-	TextStyled,
-} from '../custom/CustomComponents';
+	Circle,
+	GetThemeValueForKey,
+	getToken,
+	H5,
+	styled,
+	View,
+	XStack,
+} from 'tamagui';
+import Tags from '../Badge';
+import { MyButtonIcon, TextStyled } from '../custom/CustomComponents';
 import DisplayImages from './DisplayImages';
 
 interface EntryProps {
@@ -20,66 +18,62 @@ interface EntryProps {
 }
 
 const bulletOption = {
-	size: 16,
-	marginTop: 9,
+	size: 18,
+	marginTop: 12,
+	spacing: '$2.5' as GetThemeValueForKey<'gap'>,
 };
+
+const VerticalLine = styled(View, {
+	position: 'absolute',
+	left: '$4',
+	width: bulletOption.size,
+	top: bulletOption.size + bulletOption.marginTop,
+	height: '100%',
+	children: <View width={4} bg="$blue4" height="100%" mx="auto" />,
+});
+
+const Bullet = styled(Circle, {
+	size: bulletOption.size,
+	mt: bulletOption.marginTop,
+	borderColor: '$blue10',
+	borderWidth: 3,
+});
 
 export function Entry({ entry, isLast }: EntryProps) {
 	const { content, location, tags, images } = entry;
 
-	const displayImageOffset = getToken('space', '2') + bulletOption.size;
-
-	const VertivalLine = !isLast && (
-		<View
-			position="absolute"
-			left="$4"
-			w={bulletOption.size}
-			top={bulletOption.size + bulletOption.marginTop}
-			h="100%"
-		>
-			<View w={3} bg="$primary50" h="100%" mx="auto" />
-		</View>
-	);
+	const displayImageOffset = getToken('$2', 'space') + bulletOption.size;
 
 	return (
-		<Box position="relative" mt="$4">
-			{VertivalLine}
-			<HStack px="$4" gap="$2">
-				<Center
-					borderRadius={1000}
-					w={bulletOption.size}
-					h={bulletOption.size}
-					mt={bulletOption.marginTop}
-					borderColor="$primary500"
-					borderWidth={3}
-				/>
+		<View position="relative" mt="$4">
+			{!isLast && <VerticalLine />}
+			<XStack px="$4" gap={bulletOption.spacing}>
+				<Bullet />
 				<View flex={1}>
-					<HStack alignItems="center" justifyContent="space-between">
-						<HeadingStyled size="md" color="$primary500" fontWeight="bold">
+					<XStack alignItems="center" justifyContent="space-between">
+						<H5 color="$blue10" fontWeight="bold">
 							{moment(entry.datetime).format('HH:mm')}
-						</HeadingStyled>
-						<MyButtonIcon
-							name="more-horizontal"
-							size="xs"
-							borderRadius="$full"
-						/>
-					</HStack>
-					<View gap="$2" mt="$0.5">
+						</H5>
+						<MyButtonIcon size="$3" name="more-horizontal" circular />
+					</XStack>
+					<View gap="$2.5" mt="$0.5">
 						{!!location && (
 							<TextStyled
 								fontWeight="400"
-								fontSize="$sm"
 								numberOfLines={1}
-								color="$trueGray500"
+								color="$color10"
 								children={location.address}
 							/>
 						)}
-						{!!content && <TextStyled>{content}</TextStyled>}
+						{!!content && (
+							<TextStyled lineHeight="$4">{content}</TextStyled>
+						)}
 					</View>
 				</View>
-			</HStack>
+			</XStack>
 			{!!images.length && (
 				<DisplayImages
+					mt="$2.5"
 					images={images.map(({ imageUrl, ...e }) => ({
 						...e,
 						uri: imageUrl,
@@ -88,15 +82,15 @@ export function Entry({ entry, isLast }: EntryProps) {
 				/>
 			)}
 			{!!tags.length && (
-				<View mt="$3.5" pl={displayImageOffset}>
-					<HStack gap="$2" px="$4" flexWrap="wrap">
+				<View mt="$2.5" pl={displayImageOffset}>
+					<XStack gap="$2" px="$4" flexWrap="wrap">
 						{tags.map((e) => (
 							<Tags key={e.id} children={e.name} />
 						))}
-					</HStack>
+					</XStack>
 				</View>
 			)}
-			<View h="$1" />
-		</Box>
+			<View height="$0.5" />
+		</View>
 	);
 }

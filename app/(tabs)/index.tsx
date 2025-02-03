@@ -1,11 +1,11 @@
-import { Container, ThemedIcon } from '@/components/custom/CustomComponents';
+import { Container, MyButtonIcon } from '@/components/custom/CustomComponents';
 import { DailyJournalTitle } from '@/components/journal/DailyJournal';
 import { Entry } from '@/components/journal/Entry';
 import HeaderHome from '@/components/journal/HeaderHome';
-import { Fab, FabIcon } from '@gluestack-ui/themed';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { SectionList } from 'react-native';
+import { View } from 'tamagui';
 
 const getDummyImage = (w: number, h: number) => ({
 	width: w,
@@ -241,6 +241,7 @@ export default function Home() {
 		<Container position="relative">
 			<SectionList
 				ListHeaderComponent={<HeaderHome />}
+				ListFooterComponent={<View height="$3" />}
 				nestedScrollEnabled
 				sections={sections}
 				keyExtractor={(item) => item.id.toString()}
@@ -257,11 +258,22 @@ export default function Home() {
 					<Entry entry={item} isLast={index === section.data.length - 1} />
 				)}
 			/>
-			<Fab w={55} h={55} onPress={() => router.push('/create')}>
-				<FabIcon
-					as={() => <ThemedIcon name="plus" size={24} color="$white" />}
-				/>
-			</Fab>
+
+			<MyButtonIcon
+				pos="absolute"
+				right="$4"
+				bottom="$4"
+				transparent={false}
+				theme="blue"
+				size="$5"
+				borderWidth={1}
+				borderColor="$blue8"
+				shadowColor="$accent10"
+				elevation="$0.5"
+				background="initial"
+				name="plus"
+				onPress={() => router.push('/create')}
+			/>
 		</Container>
 	);
 }

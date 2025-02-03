@@ -1,32 +1,34 @@
-import Tags from '@/components/Badge';
-import { CreateFormValues } from '@/context/CreateFormContext';
-import { useSheetDisclousure } from '@/hooks/useSheetDisclousure';
-import { HStack, View } from '@gluestack-ui/themed';
-import { UseControllerReturn } from 'react-hook-form';
-import { MyTouchableOpacity, ThemedIcon } from '../custom/CustomComponents';
+import { useCreateForm } from '@/context/CreateFormContext';
+import { View, XStack } from 'tamagui';
+import {
+	MyTouchableOpacity,
+	TextStyled,
+	ThemedIcon,
+} from '../custom/CustomComponents';
+import { useDisclousureOverlay } from './overlay/overlayContext';
+import Tags from '../Badge';
 
-type DisplayTagsProps = UseControllerReturn<CreateFormValues, 'tags'> &
-	ReturnType<typeof useSheetDisclousure>;
-
-export function DisplayTags(props: DisplayTagsProps) {
-	const { field, open } = props;
-	const { value } = field;
+export function DisplayTags() {
+	const { watch } = useCreateForm();
+	const { tagSheet } = useDisclousureOverlay();
+	const value = watch('tags');
 
 	if (!value.length) return null;
 
 	return (
 		<View px="$4">
-			<MyTouchableOpacity onPress={open}>
-				<HStack gap="$2" alignItems="flex-start">
+			<MyTouchableOpacity onPress={tagSheet.open}>
+				<XStack gap="$2.5" alignItems="flex-start">
 					<View mt={3}>
-						<ThemedIcon name="hash" color="$primary500" size={18} />
+						<ThemedIcon name="hash" color="$blue10" size={18} />
 					</View>
-					<HStack gap="$2" flexWrap="wrap" flex={1}>
+
+					<XStack gap="$2" flexWrap="wrap" flex={1}>
 						{value.map((e) => (
 							<Tags key={e} children={e} />
 						))}
-					</HStack>
-				</HStack>
+					</XStack>
+				</XStack>
 			</MyTouchableOpacity>
 		</View>
 	);

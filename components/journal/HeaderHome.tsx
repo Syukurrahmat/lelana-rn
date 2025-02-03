@@ -1,21 +1,19 @@
-import { Card, Heading, View, VStack } from '@gluestack-ui/themed';
-import { HeadingStyled, TextStyled } from '../custom/CustomComponents';
+import { Card, H2, H5, Stack, View } from 'tamagui';
+import { TextStyled } from '../custom/CustomComponents';
 
 export default function HeaderHome() {
 	return (
 		<View p="$4" gap="$4">
-			<VStack gap="$2">
-				<HeadingStyled size="2xl">Selamat Pagi</HeadingStyled>
+			<Stack gap="$2">
+				<H2>Selamat Pagi</H2>
 				<TextStyled>
 					Here&apos;s a basic starter to show navigating from one screen to
 					another.
 				</TextStyled>
-			</VStack>
-			<Card variant="outline" borderColor="$blue200" bg="$blue50" p="$3">
-				<HeadingStyled size="lg" mb="$1">
-					Kata Kata Hari ini
-				</HeadingStyled>
-				<TextStyled>
+			</Stack>
+			<Card theme="blue" p="$4" gap="$2" elevation="$0.25">
+				<H5 fontWeight={600}>Kata Kata Hari ini</H5>
+				<TextStyled lineHeight="$4">
 					Lorem ipssum dolor sit, amet consectetur adipisicing elit. Esse
 					tempora sint veniam omnis, tempore culpa quasi hic corrupti
 					asperiores. Provident aliquam sequi quaerat, fugit nihil ipsum

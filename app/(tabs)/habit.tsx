@@ -1,4 +1,4 @@
-import { TextStyled } from '@/components/custom/CustomComponents';
+import { Container, TextStyled } from '@/components/custom/CustomComponents';
 import CustomTabbar from '@/components/habits/CustomTabbar';
 import OverallHabits from '@/components/habits/OverallHabits';
 import TodayHabit from '@/components/habits/TodayHabits';
@@ -6,15 +6,10 @@ import WeekHabits from '@/components/habits/WeekHabits';
 import { memo, useState } from 'react';
 
 import { HabitPageContext } from '@/components/habits/HabitPageContext';
-import { useWindowDimensions } from 'react-native';
-import {
-	Route,
-	SceneMap,
-	TabView
-} from 'react-native-tab-view';
- import { useImmer } from "use-immer";
-import { Box, Heading, VStack } from '@gluestack-ui/themed';
-
+import { Dimensions } from 'react-native';
+import { Route, SceneMap, TabView } from 'react-native-tab-view';
+import { Heading, Stack } from 'tamagui';
+import { useImmer } from 'use-immer';
 
 const dummyHabits: Habit[] = [
 	{
@@ -93,28 +88,27 @@ const routes: Route[] = [
 ];
 
 export default function TabsDemo() {
-	const layout = useWindowDimensions();
-	const [index, setIndex] = useState(0);
+	const [index, setIndex] = useState(1);
 	const [habits, setHabits] = useImmer(dummyHabits);
-	
+
 	return (
-		<Box>
-			<VStack bg="$backgroundStrong" p="$4">
-				<Heading size='md'>Habbit {index}</Heading>
+		<Container>
+			<Stack bg="$background" p="$4">
+				<Heading size="$6">Habbit {index}</Heading>
 				<TextStyled>Lorem ipsum dolor sit amet.</TextStyled>
-			</VStack>
+			</Stack>
 			<HabitPageContext.Provider value={{ habits, setHabits }}>
 				<TabView
 					lazy
+					key="tab-view"
 					renderTabBar={CustomTabbar}
 					navigationState={{ index, routes }}
 					renderScene={renderScene}
 					onIndexChange={setIndex}
-					initialLayout={{ width: layout.width }}
+					initialLayout={{ width: Dimensions.get('window').width }}
 					renderLazyPlaceholder={(p) => <TextStyled>sksksk</TextStyled>}
 				/>
 			</HabitPageContext.Provider>
-		</Box>
+		</Container>
 	);
 }
- 

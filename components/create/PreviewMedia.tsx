@@ -1,43 +1,75 @@
 import { useCreateForm } from '@/context/CreateFormContext';
-import { getImageDimention } from '@/libs/utils';
+import { getImageDimention, ImageDataWithDimention } from '@/libs/utils';
 import { useFieldArray } from 'react-hook-form';
-// import { CloseButton } from '../Icon';
-import { ComponentProps } from 'react';
-import { HStack, ScrollView, View } from '@gluestack-ui/themed';
-import { Image } from '@gluestack-ui/themed';
+import {
+	getVariableValue,
+	Image,
+	ScrollView,
+	View,
+	ViewProps,
+	XStack,
+} from 'tamagui';
+import { MyButtonIcon } from '../custom/CustomComponents';
 
-export function PreviewMedia(props: ComponentProps<typeof View>) {
+export function PreviewMedia(props: ViewProps) {
 	const { control } = useCreateForm();
 	const { fields: value, remove } = useFieldArray({ name: 'media', control });
 
 	if (!value || !value.length) return null;
 
+	const horizontalSpace = getVariableValue('$4', 'space') * 2;
+
 	return (
 		<View {...props}>
 			<ScrollView horizontal py="$4" showsHorizontalScrollIndicator={false}>
-				<HStack px="$4" gap="$2">
-					{getImageDimention(value, 16).map((e, index) => (
-						<View
+				<XStack px="$4" gap="$2.5">
+					{getImageDimention(value, horizontalSpace).map((e, index) => (
+						<DisplayMedia
 							key={e.uri}
-							borderWidth={1}
-							borderColor="$gray5"
-							overflow="hidden"
-							borderRadius="$sm"
-							position="relative"
-						>
-							<Image width={e.width} height={e.height} alt='preview' source={e} />
-							{/* <CloseButton
-								onPress={() => remove(index)}
-								pos="absolute"
-								right="$2.5"
-								elevation="$0.5"
-								shadowColor="$color10"
-								top="$2.5"
-							/> */}
-						</View>
+							media={e}
+							onRemove={() => remove(index)}
+						/>
 					))}
-				</HStack>
+				</XStack>
 			</ScrollView>
+		</View>
+	);
+}
+
+interface DisplayMediaProps {
+	media: ImageDataWithDimention;
+	onRemove: () => void;
+}
+
+function DisplayMedia({ media, onRemove }: DisplayMediaProps) {
+	return (
+		<View
+			borderWidth={1}
+			borderColor="$borderColorPress"
+			overflow="hidden"
+			borderRadius="$4"
+			position="relative"
+		>
+			<Image
+				width={media.width}
+				height={media.height}
+				alt="preview"
+				source={media}
+			/>
+			<MyButtonIcon
+				onPress={onRemove}
+				pos="absolute"
+				right="$2.5"
+				top="$2.5"
+				name="x"
+				bg="$color5"
+				circular
+				size="$2"
+				iconSize={18}
+				transparent={false}
+				elevation="$0.5"
+				shadowColor="$color10"
+			/>
 		</View>
 	);
 }
