@@ -95,7 +95,7 @@ function DailyHabit({ onPress, isActive, day, color }: DailyHabitProps) {
 
 	const _onPress = () => {
 		setChecked((e) => !e);
-		onPress();
+		setTimeout(onPress);
 	};
 
 	useEffect(() => {

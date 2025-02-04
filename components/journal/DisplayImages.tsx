@@ -1,39 +1,83 @@
-import { getImageDimention } from '@/libs/utils';
-import { Image, ScrollView, ScrollViewProps, View, XStack } from 'tamagui';
+import React from 'react';
+import { FlatList } from 'react-native';
 
-interface DisplayImagesProps extends ScrollViewProps {
+import { getImageDimention, ImageDataWithDimention } from '@/libs/utils';
+import { Fragment, useCallback, useState } from 'react';
+import {
+	GestureResponderEvent,
+	ListRenderItem,
+	TouchableOpacity,
+} from 'react-native';
+
+import { getVariableValue, Image, useTheme, View, ViewProps } from 'tamagui';
+import { ImageViewerModal } from '../ImageViewer/ImageViewerModal';
+import { InitialImageViewing } from '../ImageViewer/type';
+
+export interface DisplayImagesProps extends ViewProps {
 	images: EntryImageData[];
 	leftOffset: number;
 }
 
 export default function DisplayImages(props: DisplayImagesProps) {
-	const { images, leftOffset, ...scrollViewProps } = props;
+	const { images, leftOffset, ...viewProps } = props;
+
+	const imageViewerState = useState<InitialImageViewing | null>(null);
+	const imagesWithDimention = getImageDimention(images, leftOffset);
+
+	const theme = useTheme();
+
+	const onImagePressed = useCallback(
+		({ target }: GestureResponderEvent, uri: string, index: number) => {
+			target.measureInWindow((x, y, width, height) =>
+				imageViewerState[1]({ x, y, width, height, index, uri })
+			);
+		},
+		[imageViewerState]
+	);
+
+	const renderItem: ListRenderItem<ImageDataWithDimention> = useCallback(
+		({ item, index }) => (
+			<TouchableOpacity
+				onPress={(e) => onImagePressed(e, item.uri, index)}
+				activeOpacity={0.9}
+				style={{
+					borderWidth: 1,
+					borderColor: theme.borderColor.val,
+					overflow: 'hidden',
+					borderRadius: getVariableValue('$4', 'radius'),
+				}}
+			>
+				<Image
+					alt="image"
+					width={item.width}
+					height={item.height}
+					source={item}
+				/>
+			</TouchableOpacity>
+		),
+		[onImagePressed, theme.borderColor.val]
+	);
+
 	return (
-		<ScrollView
-			horizontal
-			showsHorizontalScrollIndicator={false}
-			{...scrollViewProps}
-		>
-			{!!leftOffset && <View width={leftOffset} />}
-			<XStack px="$4" gap="$2">
-				{getImageDimention(images, leftOffset).map((e, i) => (
-					<View
-						key={i}
-						borderWidth={1}
-						borderColor="$borderColor"
-						overflow="hidden"
-						borderRadius="$4"
-					>
-						<Image
-							key={i}
-							alt="image"
-							width={e.width}
-							height={e.height}
-							source={e}
-						/>
-					</View>
-				))}
-			</XStack>
-		</ScrollView>
+		<Fragment>
+			<View {...viewProps}>
+				<FlatList
+					data={imagesWithDimention}
+					renderItem={renderItem}
+					horizontal
+					showsHorizontalScrollIndicator={false}
+					overScrollMode="never"
+					keyExtractor={(item) => item.id.toString()}
+					ListFooterComponent={<View pr="$4" />}
+					ListHeaderComponent={<View pl={leftOffset} pr="$4" />}
+					ItemSeparatorComponent={() => <View pr="$2" />}
+				/>
+			</View>
+
+			<ImageViewerModal
+				images={images}
+				showedImageState={imageViewerState}
+			/>
+		</Fragment>
 	);
 }

@@ -21,7 +21,12 @@ export function PreviewMedia(props: ViewProps) {
 
 	return (
 		<View {...props}>
-			<ScrollView horizontal py="$4" showsHorizontalScrollIndicator={false}>
+			<ScrollView
+				horizontal
+				py="$4"
+				showsHorizontalScrollIndicator={false}
+				overScrollMode="never"
+			>
 				<XStack px="$4" gap="$2.5">
 					{getImageDimention(value, horizontalSpace).map((e, index) => (
 						<DisplayMedia

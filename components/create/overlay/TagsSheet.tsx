@@ -4,19 +4,9 @@ import { TextStyled, ThemedIcon } from '@/components/custom/CustomComponents';
 import { CreateFormValues, useCreateForm } from '@/context/CreateFormContext';
 import { useDebouncedValue } from '@/hooks/useDebounce';
 import { combineAndGetUniqueArray } from '@/libs/utils';
-import { Octicons } from '@expo/vector-icons';
 import React, { memo, useEffect, useState } from 'react';
 import { ControllerRenderProps, useController } from 'react-hook-form';
-import {
-	Button,
-	ButtonProps,
-	H4,
-	Input,
-	ListItem,
-	Sheet,
-	View,
-	XStack,
-} from 'tamagui';
+import { Button, ButtonProps, H4, Input, Sheet, View, XStack } from 'tamagui';
 import { useDisclousureOverlay } from './overlayContext';
 
 const dummyTags: { id?: number; name: string }[] = [
@@ -73,7 +63,7 @@ export function TagsSheet() {
 			open={opened}
 			onOpenChange={setOpened}
 			snapPointsMode="percent"
-			snapPoints={[85]}
+			snapPoints={[100]}
 			withOverlay={false}
 		>
 			<InnerTagsSheet field={field} opened={opened} />
@@ -104,13 +94,14 @@ const InnerTagsSheet = memo(function InnerTagsSheet(props: TagsSheetProps) {
 
 	const addNewTag = () => {
 		const tag = searchValue.trim();
-		if (selectedTags.length >= 5 || !tag.length || selectedTags.includes(tag)) return;
-		setSelectedTag((prev) => [...prev, tag]);
+		if (selectedTags.length >= 5 || !tag.length || selectedTags.includes(tag))
+			return;
+		setSelectedTag((prev) => [tag, ...prev]);
 	};
 
 	const appendTag = (tag: string) => {
 		if (selectedTags.length >= 5) return;
-		setSelectedTag((prev) => [...prev, tag]);
+		setSelectedTag((prev) => [tag, ...prev]);
 	};
 
 	const removeTag = (tag: string) => {
@@ -119,13 +110,13 @@ const InnerTagsSheet = memo(function InnerTagsSheet(props: TagsSheetProps) {
 
 	useEffect(() => {
 		if (!opened) {
-			onChange(selectedTags);
+			setTimeout(() => onChange(selectedTags));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [opened]);
 
 	return (
-		<View pt="$3" bg="white" boc="red" h='98%'>
+		<View pt="$3" bg="white" boc="red" h="98%">
 			<View px="$4" gap="$3">
 				<XStack ai="baseline" gap="$2">
 					<H4>Tambah Tag</H4>
@@ -183,26 +174,17 @@ const InnerTagsSheet = memo(function InnerTagsSheet(props: TagsSheetProps) {
 						debouncedSearch.length &&
 							!displayTagList.length &&
 							displayTagList.every((e) => e !== debouncedSearch)
-					) &&
-						(debouncedSearch.length > 3 ? (
-							<ListItem
-								br="$2"
-								pressTheme
-								icon={<Octicons name="plus" />}
-								color="$color9"
-								onPress={addNewTag}
-								justifyContent="flex-start"
-								title={
-									<TextStyled color="$color9">
-										Tambah {debouncedSearch}
-									</TextStyled>
-								}
-							/>
-						) : (
-							<TextStyled ta="center" color="$color9">
-								Tag Tidak ditemukan
-							</TextStyled>
-						))}
+					) && (
+						<Button
+							color="$color9"
+							onPress={addNewTag}
+							variant="outlined"
+							bw={1}
+							icon={<ThemedIcon name="plus" />}
+							justifyContent="flex-start"
+							children={'Tambah ' + debouncedSearch}
+						/>
+					)}
 				</View>
 			</Sheet.ScrollView>
 		</View>

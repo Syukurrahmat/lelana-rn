@@ -41,7 +41,7 @@ export function useSheetDisclousure(options: Options) {
 }
 
 
-export function useDisclousure(initialValue: boolean) {
+export function useDisclousure(initialValue?: boolean) {
 	const [opened, setOpened] = useState(initialValue || false);
 
 	const open = () => setOpened(true);

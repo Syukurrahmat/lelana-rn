@@ -1,3 +1,4 @@
+import { TABBAR_HEIGHT } from '@/constant/constant';
 import { Feather } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 
@@ -6,7 +7,8 @@ export default function Layout() {
 		<Tabs
 			screenOptions={{
 				tabBarStyle: {
-					height: 65,
+					height: TABBAR_HEIGHT,
+					maxHeight: TABBAR_HEIGHT,
 					zIndex: 3000000,
 					backgroundColor: 'white',
 				},

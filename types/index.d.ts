@@ -1,4 +1,4 @@
- type CreateEntryForm = {
+type CreateEntryForm = {
     content: string;
     date: string;
     time: string;
@@ -45,7 +45,7 @@ type JournalItem = {
     date: string
     entries: EntryItem[]
     habits: JournalItemHabit[]
-    summary?: Summary
+    summary?: string
 }
 
 type JournalItemHabit = {
@@ -71,6 +71,7 @@ type EntryItem = {
         id: number
     } | null
     images: {
+        id: number,
         imageUrl: string
         width: number
         height: number
@@ -83,6 +84,7 @@ type EntryItem = {
 
 
 type EntryImageData = {
+    id: number,
     uri: string;
     width: number;
     height: number;
@@ -97,7 +99,7 @@ type Habit = {
     createdAt?: Date;
     updatedAt?: Date;
     deletedAt?: Date | null;
-    isDones : boolean[]
+    isDones: boolean[]
 }
 
 
@@ -109,7 +111,7 @@ interface CustomInputProps {
 }
 
 interface ChildrenProps {
-	children: ReactNode;
+    children: ReactNode;
 }
 
 
@@ -117,3 +119,5 @@ type ControledValueProps<T> = {
     value: T | null
     onChange?: (value: T) => void
 }
+
+type UseStateReturn<T> = [T, React.Dispatch<React.SetStateAction<T>>]

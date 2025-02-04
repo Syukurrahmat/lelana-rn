@@ -23,7 +23,7 @@ export default function Layout() {
 
 	return (
 		<Provider>
-			
+			<StatusBar translucent backgroundColor='transparent' />
 			<Stack
 				screenOptions={{
 					headerShown: false,

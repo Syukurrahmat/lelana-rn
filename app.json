@@ -11,6 +11,7 @@
         "ios": {
             "supportsTablet": true
         },
+       
         "android": {
             "adaptiveIcon": {
                 "backgroundColor": "#ffffff"
@@ -34,8 +35,8 @@
                 {
                     "image": "./assets/images/splash.png",
                     "imageWidth": 200,
-                    "resizeMode": "contain",
-                    "backgroundColor": "#ffffff"
+                    "resizeMode": "contain"
+                    
                 }
             ],
             [

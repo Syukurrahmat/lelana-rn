@@ -52,7 +52,7 @@ function HabitItem({ habit, isActive, onPress }: HabitItemProps) {
 
 	const _onPress = () => {
 		setChecked((e) => !e);
-		onPress();
+		setTimeout(onPress);
 	};
 
 	useEffect(() => {

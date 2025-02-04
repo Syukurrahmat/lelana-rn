@@ -17,6 +17,7 @@ export function combineAndGetUniqueArray<T>(...args: T[][]) {
 }
 
 export type ImageDataWithDimention = {
+	id: number
 	height: number;
 	width: number;
 	uri: string;
@@ -60,6 +61,7 @@ export function getImageDimention(imagesData: EntryImageData[], horizontalSpace:
 			height: height,
 			width: width <= minW ? minW : width >= maxW ? maxW : width,
 			uri: e.uri,
+			id: e.id
 		};
 	});
 }

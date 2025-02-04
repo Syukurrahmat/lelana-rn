@@ -30,7 +30,7 @@ export function OverlayContentProvider({ children }: { children: ReactNode }) {
 		>
 			{children}
 
-			<Portal>
+			<Portal >
 				<AnimatePresence>
 					{overlayVisible && (
 						<Overlay

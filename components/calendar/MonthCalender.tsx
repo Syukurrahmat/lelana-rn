@@ -1,8 +1,10 @@
 import { TextStyled } from '@/components/custom/CustomComponents';
+import { CALENDAR_DIMENTION } from '@/constant/constant';
 import moment from 'moment';
 import React, { memo, useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Spinner, View, XStack } from 'tamagui';
+
 
 interface MonthCalendarProps {
 	startOfmonth: Date;
@@ -29,8 +31,15 @@ export const MonthCalender = memo(function MonthCalender({
 
 	const calendar = useMemo(
 		() => (
-			<View gap="$2" px="$4" py="$2">
-				<XStack height={36} justifyContent="center">
+			<View
+				gap={CALENDAR_DIMENTION.gap}
+				px={CALENDAR_DIMENTION.px}
+				py={CALENDAR_DIMENTION.py}
+			>
+				<XStack
+					height={CALENDAR_DIMENTION.headerHeight}
+					justifyContent="center"
+				>
 					<TextStyled fontSize="$4">{monthFormatted}</TextStyled>
 				</XStack>
 
@@ -46,7 +55,7 @@ export const MonthCalender = memo(function MonthCalender({
 				</View>
 			</View>
 		),
-		[]
+		[daysInMonth, firstDay, monthFormatted]
 	);
 
 	useEffect(() => {
@@ -77,7 +86,6 @@ const WeekDays = memo(function WeekDays() {
 				<View key={index} style={style.weekCellWrapper}>
 					<View flex={1} style={style.cell} width="100%">
 						<TextStyled
-							// lineHeight="$4"
 							fontSize="$3"
 							color="$color9"
 							textAlign="center"

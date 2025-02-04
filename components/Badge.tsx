@@ -4,16 +4,16 @@ import {
 	TextStyled,
 	ThemedIcon,
 } from './custom/CustomComponents';
-import { View, XStack } from 'tamagui';
+import { View, XStack, XStackProps } from 'tamagui';
 
-interface TagsProps {
+interface TagsProps extends XStackProps {
 	children: ReactNode;
 	withCloseButton?: boolean;
 	onClose?: () => void;
 }
 
 export default function Tags(props: TagsProps) {
-	const { children, withCloseButton , onClose } = props;
+	const { children, withCloseButton , onClose, ...p } = props;
 
 	return (
 		<XStack
@@ -25,6 +25,7 @@ export default function Tags(props: TagsProps) {
 			alignItems="center"
 			pr={withCloseButton ? '$0' : undefined}
 			gap="$2"
+			{...p}
 		>
 			<View py="$1">
 				<TextStyled color="$blue10">{children}</TextStyled>

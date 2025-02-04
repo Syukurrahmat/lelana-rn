@@ -88,7 +88,7 @@ const routes: Route[] = [
 ];
 
 export default function TabsDemo() {
-	const [index, setIndex] = useState(1);
+	const [index, setIndex] = useState(0);
 	const [habits, setHabits] = useImmer(dummyHabits);
 
 	return (

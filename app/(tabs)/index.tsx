@@ -8,6 +8,7 @@ import { SectionList } from 'react-native';
 import { View } from 'tamagui';
 
 const getDummyImage = (w: number, h: number) => ({
+	id: Math.floor(Math.random() * 1_000_000_000),
 	width: w,
 	height: h,
 	imageUrl: `https://images.unsplash.com/photo-1694308069570-41159e7bd4b1?q=80&w=${w}&h=${h}&auto=format&fit=crop`,
