@@ -3,16 +3,14 @@ import { Dimensions, FlatList, ListRenderItem } from 'react-native';
 import { View } from 'tamagui';
 import { TextStyled } from '../custom/CustomComponents';
 import { ImageViewerCaroseulItem } from './CarouselItem';
+import { useViewerContext } from './ImageViewerProvider';
 
-export interface ImageViewerCaroseulProps {
-	initialIndex: number;
-	images: EntryImageData[];
-}
+ 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-export function ImageViewerCaroseul(props: ImageViewerCaroseulProps) {
+export function ImageViewerCaroseul() {
 	const enableSwipeState = useState(true);
-	const { initialIndex, images } = props;
+	const {  currentIndex, images } = useViewerContext();
 	const flatListRef = useRef<FlatList>(null);
 
 	const renderItem: ListRenderItem<EntryImageData> = useCallback(
@@ -26,13 +24,13 @@ export function ImageViewerCaroseul(props: ImageViewerCaroseulProps) {
 	);
 
 	useEffect(() => {
-		if (flatListRef.current && initialIndex !== null) {
+		if (flatListRef.current && currentIndex !== null) {
 			flatListRef.current?.scrollToIndex({
-				index: initialIndex,
+				index: currentIndex,
 				animated: false,
 			});
 		}
-	}, [initialIndex]);
+	}, [currentIndex]);
 
 	return (
 		<View flex={1}>
@@ -44,7 +42,7 @@ export function ImageViewerCaroseul(props: ImageViewerCaroseulProps) {
 					pagingEnabled
 					keyExtractor={(item) => item.id.toString()}
 					renderItem={renderItem}
-					initialScrollIndex={initialIndex}
+					initialScrollIndex={currentIndex}
 					scrollEnabled={enableSwipeState[0]}
 					showsHorizontalScrollIndicator={false}
 					getItemLayout={(_, index) => ({
@@ -59,7 +57,7 @@ export function ImageViewerCaroseul(props: ImageViewerCaroseulProps) {
 			</View>
 			<View bg="white" opacity={0.3} pos="absolute" w="100%" bottom={0}>
 				<TextStyled>
-					{JSON.stringify({ initialIndex })}
+					{JSON.stringify({ initialIndex: currentIndex })}
 					Lorem ipsum dolor sit amet consectetur, adipisicing elit.
 				</TextStyled>
 			</View>

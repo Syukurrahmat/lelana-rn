@@ -8,7 +8,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getVariableValue, View } from 'tamagui';
-import { InitialImageViewing } from './type';
+import { InitialViewingMeasure } from './type';
+import { useViewerContext } from './ImageViewerProvider';
 
 const timingConfig = {
 	duration: 300,
@@ -20,16 +21,15 @@ const timingConfig = {
 };
 
 interface EnteringAnimatedProps {
-	smallImage: InitialImageViewing;
-	largeImage: EntryImageData;
 	onComplete: () => void;
 }
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export function EnteringAnimated(props: EnteringAnimatedProps) {
-	const { smallImage, onComplete, largeImage } = props;
-	const { x, y, width, height } = smallImage;
+	const { enterExitThumbData, images } = useViewerContext();
+	const { x, y, width, height , index} = enterExitThumbData;
+	
 	const insets = useSafeAreaInsets();
 	const sharedValues = useSharedValue({
 		top: y + insets.top,
@@ -38,8 +38,9 @@ export function EnteringAnimated(props: EnteringAnimatedProps) {
 		height: height,
 		borderRadius: getVariableValue('$4', 'radius'),
 	});
-
-	// console.log(insets);
+	
+	const largeImage = images[index]
+	const { onComplete } = props;
 
 	const endStyle = useMemo(() => {
 		const aspectRatio = largeImage.width / largeImage.height;
@@ -86,7 +87,7 @@ export function EnteringAnimated(props: EnteringAnimatedProps) {
 				key="djd"
 				style={[animatedStyle]}
 				alt="image"
-				source={{ uri: props.smallImage.uri }}
+				source={{ uri: largeImage.uri }}
 			/>
 		</View>
 	);
