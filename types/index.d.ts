@@ -121,3 +121,7 @@ type ControledValueProps<T> = {
 }
 
 type UseStateReturn<T> = [T, React.Dispatch<React.SetStateAction<T>>]
+
+type MeasureInWindowReturn = {
+    x: number, y: number, width: number, height: number
+}

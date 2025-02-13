@@ -1,19 +1,16 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-import { defaultConfig } from '@tamagui/config/v4';
+import { createSystemFont, defaultConfig } from '@tamagui/config/v4';
 import { createTamagui } from '@tamagui/core';
-import { createInterFont } from "@tamagui/font-inter";
 import { shorthands } from "@tamagui/shorthands";
+import { createFontArgument } from './theme/font';
 
-const headingFont = createInterFont()
-const bodyFont = createInterFont();
-
+const fonts = {
+	body: createSystemFont({ ...createFontArgument, sizeLineHeight: (n) => n + 6 }),
+	heading: createSystemFont({ ...createFontArgument, sizeLineHeight: (n) => n + 6, sizeSize: (n) => n * 1.4 }),
+}
 
 export const config = createTamagui({
 	...defaultConfig,
-	fonts: {
-		heading: headingFont,
-		body: bodyFont
-	},
+	fonts,
 	shorthands,
 	settings: {
 		...defaultConfig.settings,
@@ -25,5 +22,6 @@ export const config = createTamagui({
 type Conf = typeof config
 
 declare module '@tamagui/core' {
+	// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 	interface TamaguiCustomConfig extends Conf { }
 }

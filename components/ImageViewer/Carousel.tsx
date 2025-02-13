@@ -1,66 +1,69 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, ListRenderItem } from 'react-native';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { Dimensions, FlatList, ListRenderItem, ViewToken } from 'react-native';
 import { View } from 'tamagui';
-import { TextStyled } from '../custom/CustomComponents';
 import { ImageViewerCaroseulItem } from './CarouselItem';
-import { useViewerContext } from './ImageViewerProvider';
+import { useViewerContext } from './ViewerContext';
 
- 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-export function ImageViewerCaroseul() {
-	const enableSwipeState = useState(true);
-	const {  currentIndex, images } = useViewerContext();
+export const ImageViewerCaroseul = memo(function ImageViewerCaroseul() {
+	const { currentIndex, images, setCurrentIndex } = useViewerContext(); //prettier-ignore
+	const [isScroling, setIsScroling] = useState(false);
 	const flatListRef = useRef<FlatList>(null);
 
 	const renderItem: ListRenderItem<EntryImageData> = useCallback(
 		({ item, index }) => (
 			<ImageViewerCaroseulItem
-				enableToPanState={enableSwipeState}
+				index={index}
+				isScroling={isScroling}
 				imageData={item}
 			/>
 		),
-		[enableSwipeState]
+		[isScroling]
 	);
 
+	const onViewableItemsChanged = useCallback(
+		({ viewableItems }: { viewableItems: ViewToken<EntryImageData>[] }) => {
+			if (typeof viewableItems[0].index === 'number') {
+				setCurrentIndex(viewableItems[0].index);
+			}
+		},
+		[setCurrentIndex]
+	);
+
+	const getItemLayout = useCallback(
+		(_: any, index: number) => ({
+			length: SCREEN_WIDTH,
+			offset: SCREEN_WIDTH * index,
+			index,
+		}),
+		[]
+	);
 	useEffect(() => {
-		if (flatListRef.current && currentIndex !== null) {
+		if (currentIndex !== null) {
 			flatListRef.current?.scrollToIndex({
 				index: currentIndex,
 				animated: false,
 			});
 		}
-	}, [currentIndex]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<View flex={1}>
-			<View flex={1}>
-				<FlatList
-					ref={flatListRef}
-					data={images}
-					horizontal
-					pagingEnabled
-					keyExtractor={(item) => item.id.toString()}
-					renderItem={renderItem}
-					initialScrollIndex={currentIndex}
-					scrollEnabled={enableSwipeState[0]}
-					showsHorizontalScrollIndicator={false}
-					getItemLayout={(_, index) => ({
-						length: SCREEN_WIDTH,
-						offset: SCREEN_WIDTH * index,
-						index,
-					})}
-					onViewableItemsChanged={({ viewableItems, ...p }) => {
-						console.log(viewableItems) 
-					}}
-				/>
-			</View>
-			<View bg="white" opacity={0.3} pos="absolute" w="100%" bottom={0}>
-				<TextStyled>
-					{JSON.stringify({ initialIndex: currentIndex })}
-					Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-				</TextStyled>
-			</View>
+			<FlatList
+				ref={flatListRef}
+				data={images}
+				horizontal
+				pagingEnabled
+				initialScrollIndex={currentIndex}
+				showsHorizontalScrollIndicator={false}
+				onScrollBeginDrag={() => setIsScroling(true)}
+				onScrollEndDrag={() => setIsScroling(false)}
+				getItemLayout={getItemLayout}
+				onViewableItemsChanged={onViewableItemsChanged}
+				renderItem={renderItem}
+			/>
 		</View>
 	);
-}
+});

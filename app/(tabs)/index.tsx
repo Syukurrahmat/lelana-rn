@@ -11,7 +11,7 @@ const getDummyImage = (w: number, h: number) => ({
 	id: Math.floor(Math.random() * 1_000_000_000),
 	width: w,
 	height: h,
-	imageUrl: `https://images.unsplash.com/photo-1694308069570-41159e7bd4b1?q=80&w=${w}&h=${h}&auto=format&fit=crop`,
+	imageUrl: `https://images.unsplash.com/photo-1696220833162-3c12027f7548?q=80&w=${w}&h=${h}&auto=format&fit=crop`,
 });
 
 export const data: JournalItem[] = [

@@ -1,4 +1,5 @@
 import { TABBAR_HEIGHT } from '@/constant/constant';
+import { MyFonts } from '@/theme/font';
 import { Feather } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 
@@ -11,6 +12,9 @@ export default function Layout() {
 					maxHeight: TABBAR_HEIGHT,
 					zIndex: 3000000,
 					backgroundColor: 'white',
+				},
+				tabBarLabelStyle:{
+					fontFamily : MyFonts['500Medium']
 				},
 				tabBarItemStyle: { padding: 3 },
 				headerShown: false,

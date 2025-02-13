@@ -2,7 +2,7 @@ import { getImageDimention, ImageDataWithDimention } from '@/libs/utils';
 import React from 'react';
 import { FlatList, ListRenderItemInfo } from 'react-native';
 import { getVariableValue, Image, useTheme, View, ViewProps } from 'tamagui';
-import { ImageItemWrapper } from '../ImageViewer/ImageItemWrapper';
+import { ThumbnailItemWrapper } from '../ImageViewer/ThumbnailItemWrapper';
 import { ViewerProvider } from '../ImageViewer/ImageViewerProvider';
 
 export interface DisplayImagesProps extends ViewProps {
@@ -39,7 +39,7 @@ function RenderImageItem(props: ListRenderItemInfo<ImageDataWithDimention>) {
 	const theme = useTheme();
 
 	return (
-		<ImageItemWrapper
+		<ThumbnailItemWrapper
 			imageIndex={index}
 			style={{
 				borderWidth: 1,
@@ -54,6 +54,6 @@ function RenderImageItem(props: ListRenderItemInfo<ImageDataWithDimention>) {
 				height={item.height}
 				source={item}
 			/>
-		</ImageItemWrapper>
+		</ThumbnailItemWrapper>
 	);
 }
